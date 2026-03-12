@@ -72,6 +72,8 @@
             txt_tab4_MachineID = new TextBox();
             label12 = new Label();
             label13 = new Label();
+            btn_tab2_Del = new Button();
+            btn_tab2_Fix = new Button();
             tabControl1.SuspendLayout();
             tabPage1.SuspendLayout();
             panel2.SuspendLayout();
@@ -206,10 +208,10 @@
             // 
             tabPage2.Controls.Add(dgvListPart);
             tabPage2.Controls.Add(panel3);
-            tabPage2.Location = new Point(4, 34);
+            tabPage2.Location = new Point(4, 39);
             tabPage2.Name = "tabPage2";
             tabPage2.Padding = new Padding(3);
-            tabPage2.Size = new Size(952, 673);
+            tabPage2.Size = new Size(952, 668);
             tabPage2.TabIndex = 1;
             tabPage2.Text = "Bộ phận máy";
             tabPage2.UseVisualStyleBackColor = true;
@@ -221,11 +223,13 @@
             dgvListPart.Location = new Point(3, 257);
             dgvListPart.Name = "dgvListPart";
             dgvListPart.RowHeadersWidth = 62;
-            dgvListPart.Size = new Size(946, 413);
+            dgvListPart.Size = new Size(946, 408);
             dgvListPart.TabIndex = 14;
             // 
             // panel3
             // 
+            panel3.Controls.Add(btn_tab2_Del);
+            panel3.Controls.Add(btn_tab2_Fix);
             panel3.Controls.Add(cbb_tab2_MachineType);
             panel3.Controls.Add(txt_tab2_DisplayOrder);
             panel3.Controls.Add(txt_tab2_MachinePart);
@@ -286,7 +290,7 @@
             // 
             // btn_tab2_AddMachinePart
             // 
-            btn_tab2_AddMachinePart.Location = new Point(432, 189);
+            btn_tab2_AddMachinePart.Location = new Point(309, 189);
             btn_tab2_AddMachinePart.Name = "btn_tab2_AddMachinePart";
             btn_tab2_AddMachinePart.Size = new Size(120, 43);
             btn_tab2_AddMachinePart.TabIndex = 6;
@@ -524,6 +528,24 @@
             label13.TabIndex = 20;
             label13.Text = "Mã máy";
             // 
+            // btn_tab2_Del
+            // 
+            btn_tab2_Del.Location = new Point(596, 189);
+            btn_tab2_Del.Name = "btn_tab2_Del";
+            btn_tab2_Del.Size = new Size(112, 43);
+            btn_tab2_Del.TabIndex = 15;
+            btn_tab2_Del.Text = "Xoá";
+            btn_tab2_Del.UseVisualStyleBackColor = true;
+            // 
+            // btn_tab2_Fix
+            // 
+            btn_tab2_Fix.Location = new Point(451, 189);
+            btn_tab2_Fix.Name = "btn_tab2_Fix";
+            btn_tab2_Fix.Size = new Size(112, 43);
+            btn_tab2_Fix.TabIndex = 14;
+            btn_tab2_Fix.Text = "Sửa";
+            btn_tab2_Fix.UseVisualStyleBackColor = true;
+            // 
             // FrmSetup
             // 
             AutoScaleDimensions = new SizeF(12F, 30F);
@@ -600,5 +622,7 @@
         private Button btn_tab3_Detail;
         private Button btn_tab1_Delete;
         private Button btn_tab1_Fix;
+        private Button btn_tab2_Del;
+        private Button btn_tab2_Fix;
     }
 }
