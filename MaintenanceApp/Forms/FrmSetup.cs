@@ -108,7 +108,15 @@ namespace MaintenanceApp.Forms
         private void btn_tab1_Fix_Click(object sender, EventArgs e)
         {
             _service.UpdateMachineType(selectedTypeId, txt_tab1_MachineType.Text);
+            MessageBox.Show("Cập nhật thành công");
             FrmSetup_Shown(null, null);
+        }
+
+        private void btn_tab1_Delete_Click(object sender, EventArgs e)
+        {
+            _service.DeleteMachineType(selectedTypeId);
+            FrmSetup_Shown(null, null);
+
         }
     }
 }

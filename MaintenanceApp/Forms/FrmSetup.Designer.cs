@@ -155,6 +155,7 @@
             btn_tab1_Delete.TabIndex = 8;
             btn_tab1_Delete.Text = "Xoá";
             btn_tab1_Delete.UseVisualStyleBackColor = true;
+            btn_tab1_Delete.Click += btn_tab1_Delete_Click;
             // 
             // btn_tab1_Fix
             // 
