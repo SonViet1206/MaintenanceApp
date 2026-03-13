@@ -36,10 +36,16 @@ namespace MaintenanceApp.Forms
             _service.AddMachinePart((int)cbb_tab2_MachineType.SelectedValue, txt_tab2_MachinePart.Text, (int)txt_tab2_DisplayOrder.Value);
 
             MessageBox.Show("Added successfully");
+            LoadMachinePartsForType();
         }
         private void LoadMachineTypes()
         {
             dgvMachineType.DataSource = _service.GetMachineTypes();
+        }
+        void LoadMachinePartsForType()
+        {
+            int typeId = (int)cbb_tab2_MachineType.SelectedValue;
+            dgvListPart.DataSource = _service.GetPartsForType(typeId);
         }
         private void LoadMachineTypeCombo()
         {
@@ -62,6 +68,7 @@ namespace MaintenanceApp.Forms
         {
             LoadMachineTypes();
             LoadMachineTypeCombo();
+            LoadMachinePartsForType();
         }
 
         private void cbb_tab3_MachineType_SelectedIndexChanged(object sender, EventArgs e)
@@ -117,6 +124,20 @@ namespace MaintenanceApp.Forms
             _service.DeleteMachineType(selectedTypeId);
             FrmSetup_Shown(null, null);
 
+        }
+
+        private void btn_tab2_Fix_Click(object sender, EventArgs e)
+        {
+            _service.UpdateMachinePart((int)dgvListPart.SelectedRows[0].Cells["id"].Value, txt_tab2_MachinePart.Text, (int)txt_tab2_DisplayOrder.Value);
+            MessageBox.Show("Cập nhật thành công");
+            LoadMachinePartsForType();
+        }
+
+        private void btn_tab2_Del_Click(object sender, EventArgs e)
+        {
+            _service.DeleteMachinePart((int)dgvListPart.SelectedRows[0].Cells["id"].Value);
+            MessageBox.Show("Xoá thành công");
+            LoadMachinePartsForType();
         }
     }
 }

@@ -42,6 +42,8 @@
             tabPage2 = new TabPage();
             dgvListPart = new DataGridView();
             panel3 = new Panel();
+            btn_tab2_Del = new Button();
+            btn_tab2_Fix = new Button();
             cbb_tab2_MachineType = new ComboBox();
             txt_tab2_DisplayOrder = new NumericUpDown();
             txt_tab2_MachinePart = new TextBox();
@@ -72,8 +74,6 @@
             txt_tab4_MachineID = new TextBox();
             label12 = new Label();
             label13 = new Label();
-            btn_tab2_Del = new Button();
-            btn_tab2_Fix = new Button();
             tabControl1.SuspendLayout();
             tabPage1.SuspendLayout();
             panel2.SuspendLayout();
@@ -218,11 +218,13 @@
             // 
             // dgvListPart
             // 
+            dgvListPart.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvListPart.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvListPart.Dock = DockStyle.Fill;
             dgvListPart.Location = new Point(3, 257);
             dgvListPart.Name = "dgvListPart";
             dgvListPart.RowHeadersWidth = 62;
+            dgvListPart.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvListPart.Size = new Size(946, 408);
             dgvListPart.TabIndex = 14;
             // 
@@ -242,6 +244,26 @@
             panel3.Name = "panel3";
             panel3.Size = new Size(946, 254);
             panel3.TabIndex = 13;
+            // 
+            // btn_tab2_Del
+            // 
+            btn_tab2_Del.Location = new Point(596, 189);
+            btn_tab2_Del.Name = "btn_tab2_Del";
+            btn_tab2_Del.Size = new Size(112, 43);
+            btn_tab2_Del.TabIndex = 15;
+            btn_tab2_Del.Text = "Xoá";
+            btn_tab2_Del.UseVisualStyleBackColor = true;
+            btn_tab2_Del.Click += btn_tab2_Del_Click;
+            // 
+            // btn_tab2_Fix
+            // 
+            btn_tab2_Fix.Location = new Point(451, 189);
+            btn_tab2_Fix.Name = "btn_tab2_Fix";
+            btn_tab2_Fix.Size = new Size(112, 43);
+            btn_tab2_Fix.TabIndex = 14;
+            btn_tab2_Fix.Text = "Sửa";
+            btn_tab2_Fix.UseVisualStyleBackColor = true;
+            btn_tab2_Fix.Click += btn_tab2_Fix_Click;
             // 
             // cbb_tab2_MachineType
             // 
@@ -527,24 +549,6 @@
             label13.Size = new Size(91, 30);
             label13.TabIndex = 20;
             label13.Text = "Mã máy";
-            // 
-            // btn_tab2_Del
-            // 
-            btn_tab2_Del.Location = new Point(596, 189);
-            btn_tab2_Del.Name = "btn_tab2_Del";
-            btn_tab2_Del.Size = new Size(112, 43);
-            btn_tab2_Del.TabIndex = 15;
-            btn_tab2_Del.Text = "Xoá";
-            btn_tab2_Del.UseVisualStyleBackColor = true;
-            // 
-            // btn_tab2_Fix
-            // 
-            btn_tab2_Fix.Location = new Point(451, 189);
-            btn_tab2_Fix.Name = "btn_tab2_Fix";
-            btn_tab2_Fix.Size = new Size(112, 43);
-            btn_tab2_Fix.TabIndex = 14;
-            btn_tab2_Fix.Text = "Sửa";
-            btn_tab2_Fix.UseVisualStyleBackColor = true;
             // 
             // FrmSetup
             // 

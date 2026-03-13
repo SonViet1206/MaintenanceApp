@@ -265,6 +265,54 @@ namespace MaintenanceApp.Infrastructure
 
             cmd.ExecuteNonQuery();
         }
+        public DataTable GetPartsForType(int machineTypeId)
+        {
+            using var conn = new NpgsqlConnection(_connectionString);
+            var sql = @"SELECT 
+	                    mt.machine_type_name,
+                        mp.id,
+	                    mp.display_order,
+	                    mp.part_name
+                    FROM machine_type mt
+                    JOIN machine_part mp 
+                        ON mt.id = @typeId AND mp.machine_type_id = mt.id
+                    ORDER BY mp.display_order";
+            using var cmd = new NpgsqlCommand(sql, conn);
+            cmd.Parameters.AddWithValue("typeId", machineTypeId);
+            var dt = new DataTable();
+            using var adapter = new NpgsqlDataAdapter(cmd);
+            adapter.Fill(dt);
+            return dt;
+        }
+        public void UpdateMachinePart(int id, string name,int display_order)
+        {
+            using var conn = new NpgsqlConnection(_connectionString);
+            conn.Open();
+
+            var sql = @"UPDATE machine_part
+                SET  part_name= @name,
+                    display_order = @display_order
+                WHERE id = @id";
+
+            using var cmd = new NpgsqlCommand(sql, conn);
+
+            cmd.Parameters.AddWithValue("id", id);
+            cmd.Parameters.AddWithValue("name", name);
+            cmd.Parameters.AddWithValue("display_order", display_order);
+
+            cmd.ExecuteNonQuery();
+        }
+        public void DeleteMachinePart(int machinePartId)
+        {
+            using var conn = new NpgsqlConnection(_connectionString);
+            conn.Open();
+            var sql = @"DELETE FROM machine_part
+                WHERE id = @machinePartId";
+            using var cmd = new NpgsqlCommand(sql, conn);
+            cmd.Parameters.AddWithValue("machinePartId", machinePartId);
+            cmd.ExecuteNonQuery();
+
+        }
 
 
     }

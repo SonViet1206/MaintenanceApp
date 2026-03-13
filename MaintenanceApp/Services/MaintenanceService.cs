@@ -27,13 +27,13 @@ namespace MaintenanceApp.Services
         }
         public void AddMachineType(string name)
         {
-                _repo.AddMachineType(name);
+            _repo.AddMachineType(name);
         }
         public void AddMachinePart(int typeId, string partName, int order)
         {
             _repo.AddMachinePart(typeId, partName, order);
         }
-        public void AddMaintenanceItem(int MachineTypeID,int partId, string itemName, string standard, string method,string ng_solution, int order)
+        public void AddMaintenanceItem(int MachineTypeID, int partId, string itemName, string standard, string method, string ng_solution, int order)
         {
             _repo.AddMaintenanceItem(MachineTypeID, partId, itemName, standard, method, ng_solution, order);
         }
@@ -58,6 +58,18 @@ namespace MaintenanceApp.Services
         {
             _repo.DeleteMachineType(id);
         }
+        public DataTable GetPartsForType(int machineTypeId)
+        {
+            return _repo.GetPartsForType(machineTypeId);
 
+        }
+        public void UpdateMachinePart(int machinePartId, string name, int display_order)
+        {
+            _repo.UpdateMachinePart(machinePartId, name, display_order);
+        }
+        public void DeleteMachinePart(int machinePartId)
+        {
+            _repo.DeleteMachinePart(machinePartId);
+        }
     }
 }

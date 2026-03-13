@@ -22,6 +22,9 @@ namespace MaintenanceApp.Interfaces
         DataTable GetItems(int machineTypeId, int? partId);
         void UpdateMachineType(int id, string name);
         void DeleteMachineType(int id);
+        DataTable GetPartsForType(int machineTypeId);
+        void UpdateMachinePart(int machinePartId, string name, int display_order); 
+        void DeleteMachinePart(int machinePartId);
 
     }
 }
