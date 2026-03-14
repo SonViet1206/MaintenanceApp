@@ -17,5 +17,10 @@ namespace MaintenanceApp.Forms
             InitializeComponent();
             dgvList.DataSource = dt;
         }
+
+        private void FrmTable_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

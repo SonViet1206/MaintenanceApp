@@ -71,5 +71,12 @@ namespace MaintenanceApp.Services
         {
             _repo.DeleteMachinePart(machinePartId);
         }
+
+        internal void UpdateMaintenanceItem(int id, string item_name,
+                
+                string standard, string method, string text4, int value2)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

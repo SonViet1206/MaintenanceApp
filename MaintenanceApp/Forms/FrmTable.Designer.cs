@@ -51,6 +51,7 @@
             Controls.Add(dgvList);
             Name = "FrmTable";
             Text = "FrmTable";
+            Load += FrmTable_Load;
             ((System.ComponentModel.ISupportInitialize)dgvList).EndInit();
             ResumeLayout(false);
         }

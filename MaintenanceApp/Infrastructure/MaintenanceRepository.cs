@@ -38,6 +38,8 @@ namespace MaintenanceApp.Infrastructure
         JOIN maintenance_item mi
             ON mi.part_id = mp.id
         WHERE m.machine_code = @code
+            AND mp.deleted = false
+            AND mi.deleted = false
         ORDER BY mp.display_order, mi.display_order";
 
             using var cmd = new NpgsqlCommand(sql, conn);
@@ -158,7 +160,7 @@ namespace MaintenanceApp.Infrastructure
             using var conn = new NpgsqlConnection(_connectionString);
             conn.Open();
 
-            var cmd = new NpgsqlCommand("SELECT id, machine_type_name FROM machine_type order by id", conn);
+            var cmd = new NpgsqlCommand("SELECT id, machine_type_name FROM machine_type where deleted = false order by id", conn);
 
             using var reader = cmd.ExecuteReader();
 
@@ -183,6 +185,7 @@ namespace MaintenanceApp.Infrastructure
             var sql = @"SELECT id, part_name, display_order
                 FROM machine_part
                 WHERE machine_type_id = @typeId
+                    AND deleted = false 
                 ORDER BY display_order";
 
             using var cmd = new NpgsqlCommand(sql, conn);
@@ -209,12 +212,16 @@ namespace MaintenanceApp.Infrastructure
             var sql = @"SELECT 
                 mi.id,
                 mp.part_name,
+                mi.display_order,
                 mi.item_name,
                 mi.standard,
-                mi.method
+                mi.method,
+                mi.ng_solution
                 FROM maintenance_item mi
                 JOIN machine_part mp ON mi.part_id = mp.id
                 WHERE mp.machine_type_id = @typeId
+                AND mp.deleted = false
+                AND mi.deleted = false
                 AND (@partId IS NULL OR mi.part_id = @partId)
                 ORDER BY mp.display_order, mi.display_order";
 
@@ -256,7 +263,8 @@ namespace MaintenanceApp.Infrastructure
             using var conn = new NpgsqlConnection(_connectionString);
             conn.Open();
 
-            var sql = @"DELETE FROM machine_type
+            var sql = @"UPDATE machine_type
+                SET deleted = true
                 WHERE id = @id";
 
             using var cmd = new NpgsqlCommand(sql, conn);
@@ -275,7 +283,10 @@ namespace MaintenanceApp.Infrastructure
 	                    mp.part_name
                     FROM machine_type mt
                     JOIN machine_part mp 
-                        ON mt.id = @typeId AND mp.machine_type_id = mt.id
+                        ON mt.id = @typeId 
+                        AND mp.machine_type_id = mt.id
+                        AND mp.deleted = false
+                        AND mt.deleted = false
                     ORDER BY mp.display_order";
             using var cmd = new NpgsqlCommand(sql, conn);
             cmd.Parameters.AddWithValue("typeId", machineTypeId);
@@ -306,7 +317,8 @@ namespace MaintenanceApp.Infrastructure
         {
             using var conn = new NpgsqlConnection(_connectionString);
             conn.Open();
-            var sql = @"DELETE FROM machine_part
+            var sql = @"UPDATE machine_part
+                SET deleted = true
                 WHERE id = @machinePartId";
             using var cmd = new NpgsqlCommand(sql, conn);
             cmd.Parameters.AddWithValue("machinePartId", machinePartId);
