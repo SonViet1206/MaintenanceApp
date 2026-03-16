@@ -393,6 +393,7 @@
             dgv_tab3.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgv_tab3.Size = new Size(1247, 975);
             dgv_tab3.TabIndex = 31;
+            dgv_tab3.CellClick += dgv_tab3_CellClick;
             dgv_tab3.KeyPress += dgv_tab3_KeyPress;
             // 
             // pnTab3

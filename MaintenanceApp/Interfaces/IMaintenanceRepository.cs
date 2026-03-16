@@ -25,6 +25,6 @@ namespace MaintenanceApp.Interfaces
         DataTable GetPartsForType(int machineTypeId);
         void UpdateMachinePart(int machinePartId, string name, int display_order); 
         void DeleteMachinePart(int machinePartId);
-
+        void UpdateMaintenanceItem(int id, string itemName, string standard, string method, string ng_solution, int display_order);
     }
 }

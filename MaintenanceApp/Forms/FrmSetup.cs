@@ -204,13 +204,27 @@ namespace MaintenanceApp.Forms
 
         private void btn_tab3_Fix_Click(object sender, EventArgs e)
         {
-            if (dgv_tab3.SelectedRows.Count==0)
+            if (dgv_tab3.SelectedRows.Count == 0)
             {
                 MessageBox.Show("Vui lòng chọn bản ghi cần sửa");
                 return;
-            }    
+            }
             _service.UpdateMaintenanceItem((int)dgv_tab3.SelectedRows[0].Cells["id"].Value, txt_tab3_IteamName.Text, txt_tab3_standard.Text, txt_tab3_method.Text, txt_tab3_Ng_solution.Text, (int)txt_tab3_DisplayOrder.Value);
             MessageBox.Show("Cập nhật thành công");
+            dgv_tab3.SelectedRows[0].Selected = false;
+        }
+
+        private void dgv_tab3_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if(e.RowIndex!=-1)
+            {
+                DataGridViewRow row = dgv_tab3.Rows[e.RowIndex];
+                txt_tab3_IteamName.Text = row.Cells["item_name"].Value.ToString();
+                txt_tab3_standard.Text = row.Cells["standard"].Value.ToString();
+                txt_tab3_method.Text = row.Cells["method"].Value.ToString();
+                txt_tab3_Ng_solution.Text = row.Cells["ng_solution"].Value.ToString();
+                txt_tab3_DisplayOrder.Value = Convert.ToInt32(row.Cells["display_order"].Value);
+            }    
         }
     }
 }

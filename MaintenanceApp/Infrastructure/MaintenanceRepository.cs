@@ -1,10 +1,11 @@
 ﻿//using DocumentFormat.OpenXml.Drawing.Charts;
+using DocumentFormat.OpenXml.Wordprocessing;
 using MaintenanceApp.Domain;
 using MaintenanceApp.Interfaces;
 using Npgsql;
 using System;
-using System.Data;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -322,6 +323,30 @@ namespace MaintenanceApp.Infrastructure
                 WHERE id = @machinePartId";
             using var cmd = new NpgsqlCommand(sql, conn);
             cmd.Parameters.AddWithValue("machinePartId", machinePartId);
+            cmd.ExecuteNonQuery();
+
+        }
+        public void UpdateMaintenanceItem(int id, string itemName, string standard, string method, string ng_solution, int display_order)
+        {
+            using var conn = new NpgsqlConnection(_connectionString);
+            conn.Open();
+            var sql = @"UPDATE maintenance_item
+                SET  item_name= @item_name,
+                     standard= @standard,
+                        method= @method,
+                        ng_solution= @ng_solution,
+                    display_order = @display_order
+                WHERE id = @id";
+
+            using var cmd = new NpgsqlCommand(sql, conn);
+
+            cmd.Parameters.AddWithValue("id", id);
+            cmd.Parameters.AddWithValue("item_name",itemName);
+            cmd.Parameters.AddWithValue("standard", standard);
+            cmd.Parameters.AddWithValue("method", method);
+            cmd.Parameters.AddWithValue("ng_solution", ng_solution);
+            cmd.Parameters.AddWithValue("display_order", display_order);
+
             cmd.ExecuteNonQuery();
 
         }

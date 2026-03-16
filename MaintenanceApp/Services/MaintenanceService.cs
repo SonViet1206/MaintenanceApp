@@ -72,11 +72,9 @@ namespace MaintenanceApp.Services
             _repo.DeleteMachinePart(machinePartId);
         }
 
-        internal void UpdateMaintenanceItem(int id, string item_name,
-                
-                string standard, string method, string text4, int value2)
+        public void UpdateMaintenanceItem(int id,string itemName,string standard,string method,string ng_solution,int display_order)
         {
-            throw new NotImplementedException();
+            _repo.UpdateMaintenanceItem(id,itemName,standard,method,ng_solution,display_order);
         }
     }
 }
