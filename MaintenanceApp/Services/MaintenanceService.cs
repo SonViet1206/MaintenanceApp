@@ -45,7 +45,7 @@ namespace MaintenanceApp.Services
         {
             return _repo.GetParts(machineTypeId);
         }
-        public DataTable GetItems(int machineTypeId, int partId)
+        public DataTable GetItems(int machineTypeId, int? partId)
         {
             return _repo.GetItems(machineTypeId, partId);
         }
@@ -75,6 +75,32 @@ namespace MaintenanceApp.Services
         public void UpdateMaintenanceItem(int id,string itemName,string standard,string method,string ng_solution,int display_order)
         {
             _repo.UpdateMaintenanceItem(id,itemName,standard,method,ng_solution,display_order);
+        }
+
+        internal void DeleteMaintenanceItem(int id)
+        {
+            _repo.DeleteMaintenanceItem(id);
+
+        }
+
+        internal void AddMachine(string machineName, int machineType_ID)
+        {
+            _repo.AddMachine(machineName, machineType_ID);
+        }
+
+        internal DataTable GetAllMachine()
+        {
+            return _repo.GetAllMachine();
+        }
+
+        internal void UpdateMachine(int idMachine, string machineName, int machine_type_id)
+        {
+             _repo.UpdateMachine(idMachine, machineName, machine_type_id);
+        }
+
+        internal void DeleteMachine(int idMachine)
+        {
+           _repo.DeleteMachine(idMachine);
         }
     }
 }

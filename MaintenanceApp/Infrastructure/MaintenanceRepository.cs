@@ -11,7 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 namespace MaintenanceApp.Infrastructure
 {
-    public class MaintenanceRepository: IMaintenanceRepository
+    public class MaintenanceRepository : IMaintenanceRepository
     {
         private readonly string _connectionString;
 
@@ -114,7 +114,7 @@ namespace MaintenanceApp.Infrastructure
 
             cmd.ExecuteNonQuery();
         }
-        public void AddMaintenanceItem(int machine_type_id,int part_id,string item_name,string standard,string method,string ng_solution,int display_order)
+        public void AddMaintenanceItem(int machine_type_id, int part_id, string item_name, string standard, string method, string ng_solution, int display_order)
         {
             using var conn = new NpgsqlConnection(_connectionString);
             conn.Open();
@@ -133,11 +133,11 @@ namespace MaintenanceApp.Infrastructure
             cmd.Parameters.AddWithValue("method", method);
             cmd.Parameters.AddWithValue("solution", ng_solution);
             cmd.Parameters.AddWithValue("order", display_order);
-            
+
 
             cmd.ExecuteNonQuery();
         }
-        public void AddMachine(int machineCode,int machine_type_id)
+        public void AddMachine(string machineCode, int machine_type_id)
         {
             using var conn = new NpgsqlConnection(_connectionString);
             conn.Open();
@@ -149,7 +149,7 @@ namespace MaintenanceApp.Infrastructure
 
             cmd.Parameters.AddWithValue("code", machineCode);
             cmd.Parameters.AddWithValue("type", machine_type_id);
-            
+
 
 
             cmd.ExecuteNonQuery();
@@ -211,6 +211,7 @@ namespace MaintenanceApp.Infrastructure
             using var conn = new NpgsqlConnection(_connectionString);
 
             var sql = @"SELECT 
+                mt.machine_type_name,
                 mi.id,
                 mp.part_name,
                 mi.display_order,
@@ -219,19 +220,22 @@ namespace MaintenanceApp.Infrastructure
                 mi.method,
                 mi.ng_solution
                 FROM maintenance_item mi
-                JOIN machine_part mp ON mi.part_id = mp.id
+                JOIN machine_part mp 
+                    ON mi.part_id = mp.id
+                JOIN machine_type mt 
+                    ON mp.machine_type_id = mt.id
                 WHERE mp.machine_type_id = @typeId
                 AND mp.deleted = false
                 AND mi.deleted = false
                 AND (@partId IS NULL OR mi.part_id = @partId)
-                ORDER BY mp.display_order, mi.display_order";
+                ORDER BY mp.display_order , mi.display_order";
 
             using var cmd = new NpgsqlCommand(sql, conn);
 
             cmd.Parameters.AddWithValue("typeId", machineTypeId);
 
             if (partId == null)
-                cmd.Parameters.AddWithValue("partId", DBNull.Value);
+                cmd.Parameters.Add("partId", NpgsqlTypes.NpgsqlDbType.Integer).Value = DBNull.Value;
             else
                 cmd.Parameters.AddWithValue("partId", partId);
 
@@ -296,7 +300,7 @@ namespace MaintenanceApp.Infrastructure
             adapter.Fill(dt);
             return dt;
         }
-        public void UpdateMachinePart(int id, string name,int display_order)
+        public void UpdateMachinePart(int id, string name, int display_order)
         {
             using var conn = new NpgsqlConnection(_connectionString);
             conn.Open();
@@ -341,7 +345,7 @@ namespace MaintenanceApp.Infrastructure
             using var cmd = new NpgsqlCommand(sql, conn);
 
             cmd.Parameters.AddWithValue("id", id);
-            cmd.Parameters.AddWithValue("item_name",itemName);
+            cmd.Parameters.AddWithValue("item_name", itemName);
             cmd.Parameters.AddWithValue("standard", standard);
             cmd.Parameters.AddWithValue("method", method);
             cmd.Parameters.AddWithValue("ng_solution", ng_solution);
@@ -350,7 +354,65 @@ namespace MaintenanceApp.Infrastructure
             cmd.ExecuteNonQuery();
 
         }
+        public void DeleteMaintenanceItem(int id)
+        {
+            using var conn = new NpgsqlConnection(_connectionString);
+            conn.Open();
+            var sql = @"UPDATE maintenance_item
+                SET deleted = true
+                WHERE id = @id";
+            using var cmd = new NpgsqlCommand(sql, conn);
+            cmd.Parameters.AddWithValue("id", id);
+            cmd.ExecuteNonQuery();
 
 
+        }
+        public DataTable GetAllMachine()
+        {
+            using var conn = new NpgsqlConnection(_connectionString);
+            conn.Open();
+            DataTable table = new DataTable();
+            var sql = @"Select 
+                        mt.id as machine_type_id,
+                        mt.machine_type_name,
+                        m.id,
+                        m.machine_code
+                        From machine m
+                        JOIN machine_type mt
+                        ON m.machine_type_id = mt.id
+                        WHERE m.deleted = false
+                        ORDER BY mt.id, m.machine_code";
+
+            using var cmd = new NpgsqlCommand(sql, conn);
+            using var adapter = new NpgsqlDataAdapter(cmd);
+            adapter.Fill(table);
+            return table;
+
+        }
+        public void UpdateMachine(int idMachine, string machineName, int machine_type_id)
+        {
+            using var conn = new NpgsqlConnection(_connectionString);
+            conn.Open();
+            var sql = @"UPDATE machine
+                SET  machine_code= @machineName,
+                     machine_type_id = @machine_type_id
+                WHERE id = @idMachine";
+            using var cmd = new NpgsqlCommand(sql, conn);
+            cmd.Parameters.AddWithValue("idMachine", idMachine);
+            cmd.Parameters.AddWithValue("machineName", machineName);
+            cmd.Parameters.AddWithValue("machine_type_id", machine_type_id);
+            cmd.ExecuteNonQuery();
+        }
+        public void DeleteMachine(int idMachine)
+        {
+            using var conn = new NpgsqlConnection(_connectionString);
+            conn.Open();
+            var sql = @"UPDATE machine
+                SET deleted = true
+                WHERE id = @idMachine";
+            using var cmd = new NpgsqlCommand(sql, conn);
+            cmd.Parameters.AddWithValue("idMachine", idMachine);
+            cmd.ExecuteNonQuery();
+        }
     }
 }

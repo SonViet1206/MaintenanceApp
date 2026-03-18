@@ -78,11 +78,18 @@
             label9 = new Label();
             txt_tab3_standard = new TextBox();
             tabPage4 = new TabPage();
+            dgv_tab4 = new DataGridView();
+            panel4 = new Panel();
+            label14 = new Label();
+            cbb_tab4_MachineCode = new ComboBox();
+            button3 = new Button();
+            txt_tab4_MachineID = new TextBox();
+            btn_tab4_del = new Button();
+            label13 = new Label();
+            btn_tab4_fix = new Button();
+            label12 = new Label();
             btn_tab4_AddMachine = new Button();
             cbb_tab4_MachineType = new ComboBox();
-            txt_tab4_MachineID = new TextBox();
-            label12 = new Label();
-            label13 = new Label();
             tabControl1.SuspendLayout();
             tabPage1.SuspendLayout();
             panel2.SuspendLayout();
@@ -98,6 +105,8 @@
             pnTab3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)txt_tab3_DisplayOrder).BeginInit();
             tabPage4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dgv_tab4).BeginInit();
+            panel4.SuspendLayout();
             SuspendLayout();
             // 
             // tabControl1
@@ -155,6 +164,7 @@
             dgvMachineType.Size = new Size(1884, 787);
             dgvMachineType.TabIndex = 0;
             dgvMachineType.CellClick += dgvMachineType_CellClick;
+            dgvMachineType.DataBindingComplete += dgvMachineType_DataBindingComplete;
             // 
             // panel1
             // 
@@ -252,6 +262,7 @@
             dgvListPart.Size = new Size(1884, 726);
             dgvListPart.TabIndex = 14;
             dgvListPart.CellClick += dgvListPart_CellClick;
+            dgvListPart.DataBindingComplete += dgvListPart_DataBindingComplete;
             // 
             // panel3
             // 
@@ -366,34 +377,27 @@
             tabPage3.Padding = new Padding(3);
             tabPage3.Size = new Size(1890, 981);
             tabPage3.TabIndex = 2;
-            tabPage3.Text = "Bài kiểm tra";
+            tabPage3.Text = "Quy trình bảo dưỡng";
             tabPage3.UseVisualStyleBackColor = true;
             // 
             // dgv_tab3
             // 
             dgv_tab3.AllowUserToAddRows = false;
             dgv_tab3.AllowUserToDeleteRows = false;
-            dgv_tab3.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.DisplayedCells;
+            dgv_tab3.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgv_tab3.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
             dgv_tab3.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = SystemColors.Window;
-            dataGridViewCellStyle2.Font = new Font("Segoe UI", 8F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            dataGridViewCellStyle2.ForeColor = SystemColors.ControlText;
-            dataGridViewCellStyle2.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.False;
-            dgv_tab3.DefaultCellStyle = dataGridViewCellStyle2;
             dgv_tab3.Dock = DockStyle.Fill;
             dgv_tab3.Location = new Point(640, 3);
             dgv_tab3.Name = "dgv_tab3";
             dgv_tab3.RowHeadersWidth = 62;
-            dataGridViewCellStyle3.WrapMode = DataGridViewTriState.True;
-            dgv_tab3.RowsDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.True;
+            dgv_tab3.RowsDefaultCellStyle = dataGridViewCellStyle2;
             dgv_tab3.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgv_tab3.Size = new Size(1247, 975);
             dgv_tab3.TabIndex = 31;
             dgv_tab3.CellClick += dgv_tab3_CellClick;
+            dgv_tab3.DataBindingComplete += dgv_tab3_DataBindingComplete;
             dgv_tab3.KeyPress += dgv_tab3_KeyPress;
             // 
             // pnTab3
@@ -432,16 +436,18 @@
             btn_tab3_Delete.TabIndex = 32;
             btn_tab3_Delete.Text = "Xoá";
             btn_tab3_Delete.UseVisualStyleBackColor = true;
+            btn_tab3_Delete.Click += btn_tab3_Delete_Click;
             // 
             // btn_tab3_FullDisplay
             // 
-            btn_tab3_FullDisplay.Location = new Point(350, 794);
+            btn_tab3_FullDisplay.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btn_tab3_FullDisplay.Location = new Point(595, 3);
             btn_tab3_FullDisplay.Name = "btn_tab3_FullDisplay";
-            btn_tab3_FullDisplay.Size = new Size(120, 43);
+            btn_tab3_FullDisplay.Size = new Size(36, 30);
             btn_tab3_FullDisplay.TabIndex = 31;
-            btn_tab3_FullDisplay.Text = "Hiển thị full";
+            btn_tab3_FullDisplay.Text = "<";
             btn_tab3_FullDisplay.UseVisualStyleBackColor = true;
-            btn_tab3_FullDisplay.Click += btn_tab3_FullDisplay_Click;
+            btn_tab3_FullDisplay.Click += btn_tab3_MiniDisplay_Click;
             // 
             // btn_tab3_Fix
             // 
@@ -466,9 +472,11 @@
             // 
             txt_tab3_DisplayOrder.Font = new Font("Microsoft Sans Serif", 8F);
             txt_tab3_DisplayOrder.Location = new Point(226, 639);
+            txt_tab3_DisplayOrder.Maximum = new decimal(new int[] { 10000, 0, 0, 0 });
             txt_tab3_DisplayOrder.Name = "txt_tab3_DisplayOrder";
-            txt_tab3_DisplayOrder.Size = new Size(180, 26);
+            txt_tab3_DisplayOrder.Size = new Size(104, 26);
             txt_tab3_DisplayOrder.TabIndex = 29;
+            txt_tab3_DisplayOrder.Value = new decimal(new int[] { 1, 0, 0, 0 });
             // 
             // label6
             // 
@@ -481,11 +489,12 @@
             // 
             // btn_tab3_Detail
             // 
-            btn_tab3_Detail.Location = new Point(226, 794);
+            btn_tab3_Detail.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btn_tab3_Detail.Location = new Point(595, 39);
             btn_tab3_Detail.Name = "btn_tab3_Detail";
-            btn_tab3_Detail.Size = new Size(120, 43);
+            btn_tab3_Detail.Size = new Size(36, 30);
             btn_tab3_Detail.TabIndex = 28;
-            btn_tab3_Detail.Text = "Hiển thị";
+            btn_tab3_Detail.Text = ">";
             btn_tab3_Detail.UseVisualStyleBackColor = true;
             btn_tab3_Detail.Click += btn_tab3_Detail_Click;
             // 
@@ -564,6 +573,7 @@
             cbb_tab3_Part.Name = "cbb_tab3_Part";
             cbb_tab3_Part.Size = new Size(390, 28);
             cbb_tab3_Part.TabIndex = 19;
+            cbb_tab3_Part.SelectedIndexChanged += cbb_tab3_Part_SelectedIndexChanged;
             // 
             // txt_tab3_method
             // 
@@ -603,11 +613,8 @@
             // 
             // tabPage4
             // 
-            tabPage4.Controls.Add(btn_tab4_AddMachine);
-            tabPage4.Controls.Add(cbb_tab4_MachineType);
-            tabPage4.Controls.Add(txt_tab4_MachineID);
-            tabPage4.Controls.Add(label12);
-            tabPage4.Controls.Add(label13);
+            tabPage4.Controls.Add(dgv_tab4);
+            tabPage4.Controls.Add(panel4);
             tabPage4.Location = new Point(4, 34);
             tabPage4.Name = "tabPage4";
             tabPage4.Padding = new Padding(3);
@@ -616,48 +623,141 @@
             tabPage4.Text = "Máy";
             tabPage4.UseVisualStyleBackColor = true;
             // 
+            // dgv_tab4
+            // 
+            dgv_tab4.AllowUserToAddRows = false;
+            dgv_tab4.AllowUserToDeleteRows = false;
+            dgv_tab4.AllowUserToResizeColumns = false;
+            dgv_tab4.AllowUserToResizeRows = false;
+            dgv_tab4.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgv_tab4.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = SystemColors.Window;
+            dataGridViewCellStyle3.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            dataGridViewCellStyle3.ForeColor = SystemColors.ControlText;
+            dataGridViewCellStyle3.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = DataGridViewTriState.True;
+            dgv_tab4.DefaultCellStyle = dataGridViewCellStyle3;
+            dgv_tab4.Dock = DockStyle.Fill;
+            dgv_tab4.Location = new Point(3, 257);
+            dgv_tab4.MultiSelect = false;
+            dgv_tab4.Name = "dgv_tab4";
+            dgv_tab4.RowHeadersWidth = 62;
+            dgv_tab4.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgv_tab4.Size = new Size(1884, 726);
+            dgv_tab4.TabIndex = 29;
+            dgv_tab4.CellClick += dgv_tab4_CellClick;
+            dgv_tab4.DataBindingComplete += dgv_tab4_DataBindingComplete;
+            // 
+            // panel4
+            // 
+            panel4.Controls.Add(label14);
+            panel4.Controls.Add(cbb_tab4_MachineCode);
+            panel4.Controls.Add(button3);
+            panel4.Controls.Add(txt_tab4_MachineID);
+            panel4.Controls.Add(btn_tab4_del);
+            panel4.Controls.Add(label13);
+            panel4.Controls.Add(btn_tab4_fix);
+            panel4.Controls.Add(label12);
+            panel4.Controls.Add(btn_tab4_AddMachine);
+            panel4.Controls.Add(cbb_tab4_MachineType);
+            panel4.Dock = DockStyle.Top;
+            panel4.Location = new Point(3, 3);
+            panel4.Name = "panel4";
+            panel4.Size = new Size(1884, 254);
+            panel4.TabIndex = 28;
+            // 
+            // label14
+            // 
+            label14.AutoSize = true;
+            label14.Location = new Point(1144, 54);
+            label14.Name = "label14";
+            label14.Size = new Size(91, 30);
+            label14.TabIndex = 30;
+            label14.Text = "Mã máy";
+            // 
+            // cbb_tab4_MachineCode
+            // 
+            cbb_tab4_MachineCode.FormattingEnabled = true;
+            cbb_tab4_MachineCode.Location = new Point(1253, 50);
+            cbb_tab4_MachineCode.Name = "cbb_tab4_MachineCode";
+            cbb_tab4_MachineCode.Size = new Size(390, 38);
+            cbb_tab4_MachineCode.TabIndex = 29;
+            // 
+            // button3
+            // 
+            button3.Location = new Point(1390, 112);
+            button3.Name = "button3";
+            button3.Size = new Size(120, 43);
+            button3.TabIndex = 28;
+            button3.Text = "Tìm kiếm";
+            button3.UseVisualStyleBackColor = true;
+            button3.Click += btn_tab4_Find_Click;
+            // 
+            // txt_tab4_MachineID
+            // 
+            txt_tab4_MachineID.Location = new Point(555, 51);
+            txt_tab4_MachineID.Name = "txt_tab4_MachineID";
+            txt_tab4_MachineID.Size = new Size(390, 37);
+            txt_tab4_MachineID.TabIndex = 22;
+            // 
+            // btn_tab4_del
+            // 
+            btn_tab4_del.Location = new Point(806, 189);
+            btn_tab4_del.Name = "btn_tab4_del";
+            btn_tab4_del.Size = new Size(112, 43);
+            btn_tab4_del.TabIndex = 27;
+            btn_tab4_del.Text = "Xoá";
+            btn_tab4_del.UseVisualStyleBackColor = true;
+            btn_tab4_del.Click += btn_tab4_del_Click;
+            // 
+            // label13
+            // 
+            label13.AutoSize = true;
+            label13.Location = new Point(447, 54);
+            label13.Name = "label13";
+            label13.Size = new Size(91, 30);
+            label13.TabIndex = 20;
+            label13.Text = "Mã máy";
+            // 
+            // btn_tab4_fix
+            // 
+            btn_tab4_fix.Location = new Point(688, 189);
+            btn_tab4_fix.Name = "btn_tab4_fix";
+            btn_tab4_fix.Size = new Size(112, 43);
+            btn_tab4_fix.TabIndex = 26;
+            btn_tab4_fix.Text = "Sửa";
+            btn_tab4_fix.UseVisualStyleBackColor = true;
+            btn_tab4_fix.Click += btn_tab4_fix_Click;
+            // 
+            // label12
+            // 
+            label12.AutoSize = true;
+            label12.Location = new Point(447, 125);
+            label12.Name = "label12";
+            label12.Size = new Size(102, 30);
+            label12.TabIndex = 21;
+            label12.Text = "Kiểu máy";
+            // 
             // btn_tab4_AddMachine
             // 
-            btn_tab4_AddMachine.Location = new Point(491, 235);
+            btn_tab4_AddMachine.Location = new Point(562, 189);
             btn_tab4_AddMachine.Name = "btn_tab4_AddMachine";
             btn_tab4_AddMachine.Size = new Size(120, 43);
             btn_tab4_AddMachine.TabIndex = 24;
-            btn_tab4_AddMachine.Text = "Add";
+            btn_tab4_AddMachine.Text = "Thêm";
             btn_tab4_AddMachine.UseVisualStyleBackColor = true;
             btn_tab4_AddMachine.Click += btn_tab4_AddMachine_Click;
             // 
             // cbb_tab4_MachineType
             // 
             cbb_tab4_MachineType.FormattingEnabled = true;
-            cbb_tab4_MachineType.Location = new Point(380, 173);
+            cbb_tab4_MachineType.Location = new Point(555, 121);
             cbb_tab4_MachineType.Name = "cbb_tab4_MachineType";
             cbb_tab4_MachineType.Size = new Size(390, 38);
             cbb_tab4_MachineType.TabIndex = 23;
-            // 
-            // txt_tab4_MachineID
-            // 
-            txt_tab4_MachineID.Location = new Point(380, 120);
-            txt_tab4_MachineID.Name = "txt_tab4_MachineID";
-            txt_tab4_MachineID.Size = new Size(390, 37);
-            txt_tab4_MachineID.TabIndex = 22;
-            // 
-            // label12
-            // 
-            label12.AutoSize = true;
-            label12.Location = new Point(129, 173);
-            label12.Name = "label12";
-            label12.Size = new Size(102, 30);
-            label12.TabIndex = 21;
-            label12.Text = "Kiểu máy";
-            // 
-            // label13
-            // 
-            label13.AutoSize = true;
-            label13.Location = new Point(129, 120);
-            label13.Name = "label13";
-            label13.Size = new Size(91, 30);
-            label13.TabIndex = 20;
-            label13.Text = "Mã máy";
+            cbb_tab4_MachineType.SelectedIndexChanged += cbb_tab4_MachineType_SelectedIndexChanged;
             // 
             // FrmSetup
             // 
@@ -670,7 +770,7 @@
             KeyPreview = true;
             Margin = new Padding(4);
             Name = "FrmSetup";
-            Text = "FrmSetup";
+            Text = "Setup";
             Shown += FrmSetup_Shown;
             KeyDown += FrmSetup_KeyDown;
             tabControl1.ResumeLayout(false);
@@ -691,7 +791,9 @@
             pnTab3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)txt_tab3_DisplayOrder).EndInit();
             tabPage4.ResumeLayout(false);
-            tabPage4.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)dgv_tab4).EndInit();
+            panel4.ResumeLayout(false);
+            panel4.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -748,5 +850,12 @@
         private Button btn_tab3_Fix;
         private Button btn_tab3_FullDisplay;
         private Button btn_tab3_Delete;
+        private Button btn_tab4_del;
+        private Button btn_tab4_fix;
+        private Panel panel4;
+        private DataGridView dgv_tab4;
+        private Label label14;
+        private ComboBox cbb_tab4_MachineCode;
+        private Button button3;
     }
 }

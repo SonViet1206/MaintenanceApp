@@ -16,7 +16,7 @@ namespace MaintenanceApp.Interfaces
         void AddMachineType(string name);
         void AddMachinePart(int typeId, string partName, int order);
         void AddMaintenanceItem(int machine_type_id, int part_id, string item_name, string standard, string method, string ng_solution, int display_order);
-        void AddMachine(int machine_code, int machine_type_id);
+        void AddMachine(string machine_code, int machine_type_id);
         List<MachineType> GetMachineTypes();
         List<MachinePart> GetParts(int machineTypeId);
         DataTable GetItems(int machineTypeId, int? partId);
@@ -26,5 +26,9 @@ namespace MaintenanceApp.Interfaces
         void UpdateMachinePart(int machinePartId, string name, int display_order); 
         void DeleteMachinePart(int machinePartId);
         void UpdateMaintenanceItem(int id, string itemName, string standard, string method, string ng_solution, int display_order);
+        void DeleteMaintenanceItem(int id);
+        DataTable GetAllMachine();
+        void UpdateMachine(int idMachine, string machineName, int machine_type_id);
+        void DeleteMachine(int idMachine);
     }
 }
