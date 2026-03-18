@@ -32,7 +32,8 @@ namespace MaintenanceApp.Infrastructure
             mi.id,
             mi.item_name,
             mi.standard,
-            mi.method
+            mi.method,
+            mi.ng_solution
         FROM machine m
         JOIN machine_part mp
             ON mp.machine_type_id = m.machine_type_id
@@ -56,6 +57,7 @@ namespace MaintenanceApp.Infrastructure
                     ItemName = reader.GetString(2),
                     Standard = reader.GetString(3),
                     Method = reader.GetString(4),
+                    NgSolution=reader.GetString(5),
                     PartName = reader.GetString(0)
                 });
             }
@@ -70,8 +72,8 @@ namespace MaintenanceApp.Infrastructure
             foreach (var h in histories)
             {
                 var sql = @"INSERT INTO maintenance_history
-                    (machine_code,user_id,item_id,result,check_date)
-                    VALUES (@machine,@user,@item,@result,@date)";
+                    (machine_code,user_id,item_id,result)
+                    VALUES (@machine,@user,@item,@result)";
 
                 using var cmd = new NpgsqlCommand(sql, conn);
 
@@ -79,7 +81,7 @@ namespace MaintenanceApp.Infrastructure
                 cmd.Parameters.AddWithValue("user", h.UserId);
                 cmd.Parameters.AddWithValue("item", h.ItemId);
                 cmd.Parameters.AddWithValue("result", h.Result);
-                cmd.Parameters.AddWithValue("date", h.MaintenanceDate);
+                //cmd.Parameters.AddWithValue("date", h.MaintenanceDate);
 
                 cmd.ExecuteNonQuery();
             }

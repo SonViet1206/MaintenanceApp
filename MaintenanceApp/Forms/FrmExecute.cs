@@ -22,6 +22,11 @@ namespace MaintenanceApp.Forms
         }
         void btnRun_Click(object sender, EventArgs e)
         {
+            if (txtMachineID.Text == "" || txtUserID.Text == "")
+            {
+                MessageBox.Show("Chưa nhập mã máy hoặc mã người bảo dưỡng");
+                return;
+            }
             dgvChecklist.Rows.Clear();
 
             var items = _service.LoadChecklist(txtMachineID.Text);
@@ -29,10 +34,12 @@ namespace MaintenanceApp.Forms
             foreach (var item in items)
             {
                 dgvChecklist.Rows.Add(
+                    item.Id,
                     item.PartName,
                     item.ItemName,
                     item.Standard,
                     item.Method,
+                    item.NgSolution,
                     false,
                     false,
                     false
@@ -64,6 +71,11 @@ namespace MaintenanceApp.Forms
         }
         private void btnSave_Click(object sender, EventArgs e)
         {
+            if (dgvChecklist.Rows.Count == 0)
+            {
+                MessageBox.Show("Không có dữ liệu để lưu");
+                return;
+            }
             var histories = new List<MaintenanceHistory>();
 
             foreach (DataGridViewRow row in dgvChecklist.Rows)
@@ -74,7 +86,7 @@ namespace MaintenanceApp.Forms
                     result = "OK";
 
                 if (Convert.ToBoolean(row.Cells["Clean"].Value))
-                    result = "Clean";
+                    result = "Clean/Adjust";
 
                 if (Convert.ToBoolean(row.Cells["Replace"].Value))
                     result = "Replace";
@@ -86,14 +98,45 @@ namespace MaintenanceApp.Forms
                     MachineCode = txtMachineID.Text,
                     UserId = txtUserID.Text,
                     ItemId = itemId,
-                    Result = result,
-                    MaintenanceDate = DateTime.Now
+                    Result = result
+                    //MaintenanceDate = DateTime.Now
                 });
             }
 
             _service.SaveChecklist(histories);
 
             MessageBox.Show("Saved successfully");
+        }
+
+        private void FrmExecute_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            keyBuffer += e.KeyChar.ToString().ToUpper();
+
+            if (keyBuffer.Contains("ENG"))
+            {
+                btnAllOK.Visible = true;
+                keyBuffer = ""; // reset
+            }
+
+            // tránh dài quá
+            if (keyBuffer.Length > 10)
+                keyBuffer = keyBuffer.Substring(keyBuffer.Length - 3);
+        }
+        string keyBuffer = "";
+        private void FrmExecute_KeyDown(object sender, KeyEventArgs e)
+        {
+
+        }
+
+        private void btnAllOK_Click(object sender, EventArgs e)
+        {
+            btnAllOK.Visible = false;
+            foreach (DataGridViewRow row in dgvChecklist.Rows)
+            {
+                row.Cells["OK"].Value = true;
+                row.Cells["Clean"].Value = false;
+                row.Cells["Replace"].Value = false;
+            }
         }
     }
 }

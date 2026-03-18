@@ -1,6 +1,6 @@
 ﻿namespace MaintenanceApp.Forms
 {
-    partial class FrmTable
+    partial class FrmHistory
     {
         /// <summary>
         /// Required designer variable.

@@ -10,12 +10,13 @@ using System.Windows.Forms;
 
 namespace MaintenanceApp.Forms
 {
-    public partial class FrmTable : Form
+    public partial class FrmHistory : Form
     {
-        public FrmTable(DataTable dt)
+        Services.MaintenanceService _service;
+        public FrmHistory(Services.MaintenanceService service)
         {
             InitializeComponent();
-            dgvList.DataSource = dt;
+            _service=service;
         }
 
         private void FrmTable_Load(object sender, EventArgs e)

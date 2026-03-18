@@ -27,7 +27,7 @@ namespace MaintenanceApp
                 new MaintenanceService(maintenanceRepository);
 
             ApplicationConfiguration.Initialize();
-            Application.Run(new FrmSetup(maintenanceService));
+            Application.Run(new MainForm(maintenanceService));
         }
     }
 }

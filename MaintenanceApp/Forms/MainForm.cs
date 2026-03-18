@@ -11,7 +11,7 @@ using System.Windows.Forms;
 
 namespace MaintenanceApp.Forms
 {
-    
+
     public partial class MainForm : Form
     {
         MaintenanceService _service;
@@ -19,6 +19,24 @@ namespace MaintenanceApp.Forms
         {
             InitializeComponent();
             _service = service;
+        }
+
+        private void btnRun_Click(object sender, EventArgs e)
+        {
+            FrmExecute frmExecute = new FrmExecute(_service);
+            frmExecute.Show();
+        }
+
+        private void btnSetup_Click(object sender, EventArgs e)
+        {
+            FrmSetup frmSetup = new FrmSetup(_service);
+            frmSetup.Show();
+        }
+
+        private void btnHistory_Click(object sender, EventArgs e)
+        {
+            FrmHistory frmHistory = new FrmHistory(_service);
+            frmHistory.Show();
         }
     }
 }

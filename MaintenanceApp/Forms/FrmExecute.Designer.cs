@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmExecute));
             panel1 = new Panel();
             btnSave = new Button();
@@ -39,14 +40,15 @@
             txtMachineID = new TextBox();
             panel2 = new Panel();
             dgvChecklist = new DataGridView();
+            ItemId = new DataGridViewTextBoxColumn();
             PartName = new DataGridViewTextBoxColumn();
             ItemName = new DataGridViewTextBoxColumn();
             Standard = new DataGridViewTextBoxColumn();
             Method = new DataGridViewTextBoxColumn();
+            ng_solution = new DataGridViewTextBoxColumn();
             OK = new DataGridViewCheckBoxColumn();
             Clean = new DataGridViewCheckBoxColumn();
             Replace = new DataGridViewCheckBoxColumn();
-            ItemId = new DataGridViewTextBoxColumn();
             panel1.SuspendLayout();
             panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvChecklist).BeginInit();
@@ -69,9 +71,9 @@
             // 
             // btnSave
             // 
-            btnSave.Location = new Point(799, 164);
+            btnSave.Location = new Point(996, 143);
             btnSave.Name = "btnSave";
-            btnSave.Size = new Size(112, 34);
+            btnSave.Size = new Size(131, 55);
             btnSave.TabIndex = 6;
             btnSave.Text = "Save";
             btnSave.UseVisualStyleBackColor = true;
@@ -80,18 +82,20 @@
             // btnAllOK
             // 
             btnAllOK.BackColor = Color.LawnGreen;
-            btnAllOK.Location = new Point(1786, 164);
+            btnAllOK.Location = new Point(1813, 164);
             btnAllOK.Name = "btnAllOK";
-            btnAllOK.Size = new Size(112, 34);
+            btnAllOK.Size = new Size(85, 34);
             btnAllOK.TabIndex = 5;
             btnAllOK.Text = "All OK";
             btnAllOK.UseVisualStyleBackColor = false;
+            btnAllOK.Visible = false;
+            btnAllOK.Click += btnAllOK_Click;
             // 
             // btnRun
             // 
-            btnRun.Location = new Point(917, 143);
+            btnRun.Location = new Point(821, 143);
             btnRun.Name = "btnRun";
-            btnRun.Size = new Size(112, 34);
+            btnRun.Size = new Size(131, 55);
             btnRun.TabIndex = 4;
             btnRun.Text = "Run";
             btnRun.UseVisualStyleBackColor = true;
@@ -140,9 +144,22 @@
             // 
             // dgvChecklist
             // 
-            dgvChecklist.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.DisplayedCells;
+            dgvChecklist.AllowUserToAddRows = false;
+            dgvChecklist.AllowUserToDeleteRows = false;
+            dgvChecklist.AllowUserToResizeColumns = false;
+            dgvChecklist.AllowUserToResizeRows = false;
+            dgvChecklist.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvChecklist.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
             dgvChecklist.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvChecklist.Columns.AddRange(new DataGridViewColumn[] { PartName, ItemName, Standard, Method, OK, Clean, Replace, ItemId });
+            dgvChecklist.Columns.AddRange(new DataGridViewColumn[] { ItemId, PartName, ItemName, Standard, Method, ng_solution, OK, Clean, Replace });
+            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = SystemColors.Window;
+            dataGridViewCellStyle1.Font = new Font("Segoe UI", 11F);
+            dataGridViewCellStyle1.ForeColor = SystemColors.ControlText;
+            dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
+            dgvChecklist.DefaultCellStyle = dataGridViewCellStyle1;
             dgvChecklist.Dock = DockStyle.Fill;
             dgvChecklist.Location = new Point(0, 0);
             dgvChecklist.Name = "dgvChecklist";
@@ -152,41 +169,51 @@
             dgvChecklist.TabIndex = 0;
             dgvChecklist.CellContentClick += dgvChecklist_CellContentClick;
             // 
+            // ItemId
+            // 
+            ItemId.HeaderText = "IteamID";
+            ItemId.MinimumWidth = 8;
+            ItemId.Name = "ItemId";
+            ItemId.Visible = false;
+            // 
             // PartName
             // 
-            PartName.Frozen = true;
+            PartName.FillWeight = 113.930321F;
             PartName.HeaderText = "Bộ phận";
             PartName.MinimumWidth = 8;
             PartName.Name = "PartName";
-            PartName.Width = 119;
             // 
             // ItemName
             // 
-            ItemName.Frozen = true;
+            ItemName.FillWeight = 113.930321F;
             ItemName.HeaderText = "Nội dung kiểm tra";
             ItemName.MinimumWidth = 8;
             ItemName.Name = "ItemName";
-            ItemName.Width = 181;
             // 
             // Standard
             // 
-            Standard.Frozen = true;
+            Standard.FillWeight = 113.930321F;
             Standard.HeaderText = "Tiêu chuẩn";
             Standard.MinimumWidth = 8;
             Standard.Name = "Standard";
-            Standard.Width = 141;
             // 
             // Method
             // 
-            Method.Frozen = true;
+            Method.FillWeight = 113.930321F;
             Method.HeaderText = "Phương pháp";
             Method.MinimumWidth = 8;
             Method.Name = "Method";
-            Method.Width = 164;
+            // 
+            // ng_solution
+            // 
+            ng_solution.HeaderText = "Phương pháp xử lý NG";
+            ng_solution.MinimumWidth = 8;
+            ng_solution.Name = "ng_solution";
             // 
             // OK
             // 
-            OK.Frozen = true;
+            OK.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            OK.FillWeight = 79.54545F;
             OK.HeaderText = "OK";
             OK.MinimumWidth = 8;
             OK.Name = "OK";
@@ -194,28 +221,21 @@
             // 
             // Clean
             // 
-            Clean.Frozen = true;
+            Clean.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            Clean.FillWeight = 84.268F;
             Clean.HeaderText = "Vệ sinh";
             Clean.MinimumWidth = 8;
             Clean.Name = "Clean";
-            Clean.Width = 80;
+            Clean.Width = 89;
             // 
             // Replace
             // 
-            Replace.Frozen = true;
+            Replace.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            Replace.FillWeight = 80.46514F;
             Replace.HeaderText = "Thay thế";
             Replace.MinimumWidth = 8;
             Replace.Name = "Replace";
-            Replace.Width = 92;
-            // 
-            // ItemId
-            // 
-            ItemId.Frozen = true;
-            ItemId.HeaderText = "ItemID";
-            ItemId.MinimumWidth = 8;
-            ItemId.Name = "ItemId";
-            ItemId.Visible = false;
-            ItemId.Width = 150;
+            Replace.Width = 102;
             // 
             // FrmExecute
             // 
@@ -228,7 +248,9 @@
             Icon = (Icon)resources.GetObject("$this.Icon");
             Margin = new Padding(4);
             Name = "FrmExecute";
-            Text = "Execute";
+            Text = "Phần mềm bảo dưỡng máy";
+            KeyDown += FrmExecute_KeyDown;
+            KeyPress += FrmExecute_KeyPress;
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
             panel2.ResumeLayout(false);
@@ -248,13 +270,14 @@
         private DataGridView dgvChecklist;
         private Button btnAllOK;
         private Button btnSave;
+        private DataGridViewTextBoxColumn ItemId;
         private DataGridViewTextBoxColumn PartName;
         private DataGridViewTextBoxColumn ItemName;
         private DataGridViewTextBoxColumn Standard;
         private DataGridViewTextBoxColumn Method;
+        private DataGridViewTextBoxColumn ng_solution;
         private DataGridViewCheckBoxColumn OK;
         private DataGridViewCheckBoxColumn Clean;
         private DataGridViewCheckBoxColumn Replace;
-        private DataGridViewTextBoxColumn ItemId;
     }
 }
