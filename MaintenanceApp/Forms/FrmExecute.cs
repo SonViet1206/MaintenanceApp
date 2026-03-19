@@ -30,6 +30,11 @@ namespace MaintenanceApp.Forms
             dgvChecklist.Rows.Clear();
 
             var items = _service.LoadChecklist(txtMachineID.Text);
+            if (items.Count == 0)
+            {
+                MessageBox.Show("Không có dữ liệu bảo trì cho máy này");
+                return;
+            }
 
             foreach (var item in items)
             {
@@ -104,6 +109,7 @@ namespace MaintenanceApp.Forms
             }
 
             _service.SaveChecklist(histories);
+            
 
             MessageBox.Show("Saved successfully");
         }
@@ -125,7 +131,17 @@ namespace MaintenanceApp.Forms
         string keyBuffer = "";
         private void FrmExecute_KeyDown(object sender, KeyEventArgs e)
         {
+            keyBuffer += e.KeyCode.ToString().ToUpper();
 
+            if (keyBuffer.Contains("ENG"))
+            {
+                btnAllOK.Visible = true;
+                keyBuffer = ""; // reset
+            }
+
+            // tránh dài quá
+            if (keyBuffer.Length > 10)
+                keyBuffer = keyBuffer.Substring(keyBuffer.Length - 3);
         }
 
         private void btnAllOK_Click(object sender, EventArgs e)
@@ -137,6 +153,21 @@ namespace MaintenanceApp.Forms
                 row.Cells["Clean"].Value = false;
                 row.Cells["Replace"].Value = false;
             }
+        }
+
+        private void textBox1_KeyDown(object sender, KeyEventArgs e)
+        {
+            keyBuffer += e.KeyCode.ToString().ToUpper();
+
+            if (keyBuffer.Contains("ENG"))
+            {
+                btnAllOK.Visible = true;
+                keyBuffer = ""; // reset
+            }
+
+            // tránh dài quá
+            if (keyBuffer.Length > 10)
+                keyBuffer = keyBuffer.Substring(keyBuffer.Length - 3);
         }
     }
 }

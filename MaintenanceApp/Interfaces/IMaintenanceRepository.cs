@@ -25,10 +25,22 @@ namespace MaintenanceApp.Interfaces
         DataTable GetPartsForType(int machineTypeId);
         void UpdateMachinePart(int machinePartId, string name, int display_order); 
         void DeleteMachinePart(int machinePartId);
-        void UpdateMaintenanceItem(int id, string itemName, string standard, string method, string ng_solution, int display_order);
+        void UpdateMaintenanceItem(int id, string itemName, string standard, string method, string ng_solution, int display_order, int partId, int machine_type_id);
         void DeleteMaintenanceItem(int id);
         DataTable GetAllMachine();
         void UpdateMachine(int idMachine, string machineName, int machine_type_id);
         void DeleteMachine(int idMachine);
+        DataTable SearchHistory(
+            string machineCode,
+            string userId,
+            string result,
+            DateTime? fromDate,
+            DateTime? toDate);
+        int CreateSheet(string machineCode, string userId);
+
+
+
+
+
     }
 }

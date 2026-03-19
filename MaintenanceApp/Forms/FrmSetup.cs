@@ -42,12 +42,18 @@ namespace MaintenanceApp.Forms
         private void LoadMachineTypes()
         {
             dgvMachineType.DataSource = _service.GetMachineTypes();
+            dgvMachineType.Columns["id"].Visible = false;
+            dgvMachineType.Columns["MachineTypeName"].HeaderText = "Kiểu máy";
+
         }
         void LoadMachinePartsForType()
         {
             int typeId = (int)cbb_tab2_MachineType.SelectedValue;
             dgvListPart.DataSource = _service.GetPartsForType(typeId);
             dgvListPart.Columns["id"].Visible = false;
+            dgvListPart.Columns["machine_type_name"].HeaderText = "Kiểu máy";
+            dgvListPart.Columns["display_order"].HeaderText = "Thứ tự hiển thị";
+            dgvListPart.Columns["part_name"].HeaderText = "Bộ phận";
 
         }
         private void LoadMachineTypeCombo()
@@ -81,11 +87,34 @@ namespace MaintenanceApp.Forms
             
             cbb_tab4_MachineCode.DisplayMember = "machine_code";
             cbb_tab4_MachineCode.ValueMember = "id";
+
             cbb_tab4_MachineType_SelectedIndexChanged(null, null);
             cbb_tab4_MachineCode.SelectedItem = null;
             cbb_tab4_MachineCode.Text = "";
         }
 
+        private void btnLoad_click(object sender, EventArgs e)
+        {
+
+            int typeId = (int)cbb_tab3_MachineType.SelectedValue;
+            cbb_tab3_Part.DisplayMember = "PartName";
+            cbb_tab3_Part.ValueMember = "Id";
+            cbb_tab3_Part.DataSource = _service.GetParts(typeId);
+            dgv_tab3.DataSource = _service.GetItems((int)cbb_tab3_MachineType.SelectedValue, null);
+            dgv_tab3.Columns["id"].Visible = false;
+            dgv_tab3.Columns["machine_type_id"].Visible = false;
+            dgv_tab3.Columns["part_display_order"].Visible = false;
+            dgv_tab3.Columns["machine_type_name"].HeaderText = "Kiểu máy";
+            dgv_tab3.Columns["part_name"].HeaderText = "Bộ phận";
+            dgv_tab3.Columns["display_order"].HeaderText = "Thứ tự hiển thị";
+            dgv_tab3.Columns["item_name"].HeaderText = "Mục kiểm tra";
+            dgv_tab3.Columns["standard"].HeaderText = "Tiêu chuẩn kiểm tra";
+            dgv_tab3.Columns["method"].HeaderText = "Phương pháp kiểm tra";
+            dgv_tab3.Columns["ng_solution"].HeaderText = "Phương pháp xử lý NG";
+            if (dgv_tab3.SelectedRows.Count > 0)
+                dgv_tab3.SelectedRows[0].Selected = false;
+            txt_tab3_IteamName.Text = txt_tab3_standard.Text = txt_tab3_method.Text = txt_tab3_Ng_solution.Text = "";
+        }
         private void cbb_tab3_MachineType_SelectedIndexChanged(object sender, EventArgs e)
         {
 
@@ -95,8 +124,17 @@ namespace MaintenanceApp.Forms
             cbb_tab3_Part.DataSource = _service.GetParts(typeId);
             dgv_tab3.DataSource = _service.GetItems((int)cbb_tab3_MachineType.SelectedValue, null);
             dgv_tab3.Columns["id"].Visible = false;
+            dgv_tab3.Columns["part_display_order"].Visible = false;
+            dgv_tab3.Columns["machine_type_name"].HeaderText = "Kiểu máy";
+            dgv_tab3.Columns["part_name"].HeaderText = "Bộ phận";
+            dgv_tab3.Columns["display_order"].HeaderText = "Thứ tự hiển thị";
+            dgv_tab3.Columns["item_name"].HeaderText = "Mục kiểm tra";
+            dgv_tab3.Columns["standard"].HeaderText = "Tiêu chuẩn kiểm tra";
+            dgv_tab3.Columns["method"].HeaderText = "Phương pháp kiểm tra";
+            dgv_tab3.Columns["ng_solution"].HeaderText = "Phương pháp xử lý NG";
             if (dgv_tab3.SelectedRows.Count > 0)
                 dgv_tab3.SelectedRows[0].Selected = false;
+            txt_tab3_IteamName.Text=txt_tab3_standard.Text=txt_tab3_method.Text=txt_tab3_Ng_solution.Text="";
         }
         void LoadPartsForItem()
         {
@@ -106,6 +144,10 @@ namespace MaintenanceApp.Forms
         private void btn_tab3_AddIteamMaintenance_Click(object sender, EventArgs e)
         {
             _service.AddMaintenanceItem((int)cbb_tab3_MachineType.SelectedValue, (int)cbb_tab3_Part.SelectedValue, txt_tab3_IteamName.Text, txt_tab3_standard.Text, txt_tab3_method.Text, txt_tab3_Ng_solution.Text, (int)txt_tab3_DisplayOrder.Value);
+            MessageBox.Show("Thêm thành công");
+            cbb_tab3_MachineType_SelectedIndexChanged(null,null);
+
+
         }
 
         private void btn_tab4_AddMachine_Click(object sender, EventArgs e)
@@ -130,6 +172,8 @@ namespace MaintenanceApp.Forms
 
             dgv_tab4.Columns["machine_type_id"].Visible = false;
             dgv_tab4.Columns["id"].Visible = false;
+            dgv_tab4.Columns["machine_type_name"].HeaderText = "Kiểu máy";
+            dgv_tab4.Columns["machine_code"].HeaderText = "Kiểu máy";
             if (dgv_tab4.SelectedRows.Count > 0)
                 dgv_tab4.SelectedRows[0].Selected = false;
 
@@ -249,7 +293,7 @@ namespace MaintenanceApp.Forms
                 MessageBox.Show("Vui lòng chọn bản ghi cần sửa");
                 return;
             }
-            _service.UpdateMaintenanceItem((int)dgv_tab3.SelectedRows[0].Cells["id"].Value, txt_tab3_IteamName.Text, txt_tab3_standard.Text, txt_tab3_method.Text, txt_tab3_Ng_solution.Text, (int)txt_tab3_DisplayOrder.Value);
+            _service.UpdateMaintenanceItem((int)dgv_tab3.SelectedRows[0].Cells["id"].Value, txt_tab3_IteamName.Text, txt_tab3_standard.Text, txt_tab3_method.Text, txt_tab3_Ng_solution.Text, (int)txt_tab3_DisplayOrder.Value,(int)cbb_tab3_Part.SelectedValue,(int)cbb_tab3_MachineType.SelectedValue);
             MessageBox.Show("Cập nhật thành công");
             dgv_tab3.SelectedRows[0].Selected = false;
             dgv_tab3.DataSource = _service.GetItems((int)cbb_tab3_MachineType.SelectedValue, Convert.ToInt32(cbb_tab3_Part.SelectedValue));
@@ -260,11 +304,14 @@ namespace MaintenanceApp.Forms
             if (e.RowIndex != -1)
             {
                 DataGridViewRow row = dgv_tab3.Rows[e.RowIndex];
+                cbb_tab3_Part.SelectedIndex =Convert.ToInt32( row.Cells["part_display_order"].Value)-1;
+                cbb_tab3_MachineType.SelectedValue = Convert.ToInt32(row.Cells["machine_type_id"].Value);
                 txt_tab3_IteamName.Text = row.Cells["item_name"].Value.ToString();
                 txt_tab3_standard.Text = row.Cells["standard"].Value.ToString();
                 txt_tab3_method.Text = row.Cells["method"].Value.ToString();
                 txt_tab3_Ng_solution.Text = row.Cells["ng_solution"].Value.ToString();
                 txt_tab3_DisplayOrder.Value = Convert.ToInt32(row.Cells["display_order"].Value);
+
             }
             else
             {
@@ -294,10 +341,11 @@ namespace MaintenanceApp.Forms
 
         private void cbb_tab3_Part_SelectedIndexChanged(object sender, EventArgs e)
         {
-            dgv_tab3.DataSource = _service.GetItems((int)cbb_tab3_MachineType.SelectedValue, Convert.ToInt32(cbb_tab3_Part.SelectedValue));
-            dgv_tab3.Columns["id"].Visible = false;
-            if (dgv_tab3.SelectedRows.Count > 0)
-                dgv_tab3.SelectedRows[0].Selected = false;
+            //dgv_tab3.DataSource = _service.GetItems((int)cbb_tab3_MachineType.SelectedValue, Convert.ToInt32(cbb_tab3_Part.SelectedValue));
+            //dgv_tab3.Columns["id"].Visible = false;
+            //if (dgv_tab3.SelectedRows.Count > 0)
+            //    dgv_tab3.SelectedRows[0].Selected = false;
+            //txt_tab3_IteamName.Text = txt_tab3_standard.Text = txt_tab3_method.Text = txt_tab3_Ng_solution.Text = "";
         }
 
         private void dgv_tab4_CellClick(object sender, DataGridViewCellEventArgs e)
@@ -398,7 +446,11 @@ namespace MaintenanceApp.Forms
                 filtered.ImportRow(row);
 
             dgv_tab4.DataSource = filtered;
-            
+            dgv_tab4.Columns["machine_type_id"].Visible = false;
+            dgv_tab4.Columns["id"].Visible = false;
+            dgv_tab4.Columns["machine_type_name"].HeaderText = "Kiểu máy";
+            dgv_tab4.Columns["machine_code"].HeaderText = "Kiểu máy";
+
         }
 
         private void btn_tab4_Find_Click(object sender, EventArgs e)

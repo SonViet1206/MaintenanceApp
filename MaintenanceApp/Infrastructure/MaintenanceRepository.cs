@@ -64,26 +64,73 @@ namespace MaintenanceApp.Infrastructure
 
             return list;
         }
+        //public void SaveHistory(List<MaintenanceHistory> histories)
+        //{
+        //    using var conn = new NpgsqlConnection(_connectionString);
+        //    conn.Open();
+
+        //    foreach (var h in histories)
+        //    {
+        //        var sql = @"INSERT INTO maintenance_history
+        //            (machine_code,user_id,item_id,result)
+        //            VALUES (@machine,@user,@item,@result)";
+
+        //        using var cmd = new NpgsqlCommand(sql, conn);
+
+        //        cmd.Parameters.AddWithValue("machine", h.MachineCode);
+        //        cmd.Parameters.AddWithValue("user", h.UserId);
+        //        cmd.Parameters.AddWithValue("item", h.ItemId);
+        //        cmd.Parameters.AddWithValue("result", h.Result);
+        //        //cmd.Parameters.AddWithValue("date", h.MaintenanceDate);
+
+        //        cmd.ExecuteNonQuery();
+        //    }
+        //}
         public void SaveHistory(List<MaintenanceHistory> histories)
         {
             using var conn = new NpgsqlConnection(_connectionString);
             conn.Open();
 
-            foreach (var h in histories)
+            using var tran = conn.BeginTransaction();
+
+            try
             {
-                var sql = @"INSERT INTO maintenance_history
-                    (machine_code,user_id,item_id,result)
-                    VALUES (@machine,@user,@item,@result)";
+                // 1️⃣ Tạo sheet trước
+                var createSheetSql = @"INSERT INTO maintenance_sheet(machine_code,user_id)
+                               VALUES (@machine,@user)
+                               RETURNING id";
 
-                using var cmd = new NpgsqlCommand(sql, conn);
+                using var cmdSheet = new NpgsqlCommand(createSheetSql, conn, tran);
 
-                cmd.Parameters.AddWithValue("machine", h.MachineCode);
-                cmd.Parameters.AddWithValue("user", h.UserId);
-                cmd.Parameters.AddWithValue("item", h.ItemId);
-                cmd.Parameters.AddWithValue("result", h.Result);
-                //cmd.Parameters.AddWithValue("date", h.MaintenanceDate);
+                cmdSheet.Parameters.AddWithValue("machine", histories[0].MachineCode);
+                cmdSheet.Parameters.AddWithValue("user", histories[0].UserId);
 
-                cmd.ExecuteNonQuery();
+                int sheetId = Convert.ToInt32(cmdSheet.ExecuteScalar());
+
+                // 2️⃣ Insert history
+                foreach (var h in histories)
+                {
+                    var sql = @"INSERT INTO maintenance_history
+                        (sheet_id, machine_code, user_id, item_id, result)
+                        VALUES (@sheet_id, @machine, @user, @item, @result)";
+
+                    using var cmd = new NpgsqlCommand(sql, conn, tran);
+
+                    cmd.Parameters.AddWithValue("sheet_id", sheetId);
+                    cmd.Parameters.AddWithValue("machine", h.MachineCode);
+                    cmd.Parameters.AddWithValue("user", h.UserId);
+                    cmd.Parameters.AddWithValue("item", h.ItemId);
+                    cmd.Parameters.AddWithValue("result", h.Result);
+
+                    cmd.ExecuteNonQuery();
+                }
+
+                tran.Commit();
+            }
+            catch
+            {
+                tran.Rollback();
+                throw;
             }
         }
         public void AddMachineType(string name)
@@ -215,12 +262,14 @@ namespace MaintenanceApp.Infrastructure
             var sql = @"SELECT 
                 mt.machine_type_name,
                 mi.id,
+                mp.display_order as part_display_order,
                 mp.part_name,
                 mi.display_order,
                 mi.item_name,
                 mi.standard,
                 mi.method,
-                mi.ng_solution
+                mi.ng_solution,
+                mp.machine_type_id
                 FROM maintenance_item mi
                 JOIN machine_part mp 
                     ON mi.part_id = mp.id
@@ -332,7 +381,7 @@ namespace MaintenanceApp.Infrastructure
             cmd.ExecuteNonQuery();
 
         }
-        public void UpdateMaintenanceItem(int id, string itemName, string standard, string method, string ng_solution, int display_order)
+        public void UpdateMaintenanceItem(int id, string itemName, string standard, string method, string ng_solution, int display_order,int partId,int machine_type_id)
         {
             using var conn = new NpgsqlConnection(_connectionString);
             conn.Open();
@@ -341,6 +390,8 @@ namespace MaintenanceApp.Infrastructure
                      standard= @standard,
                         method= @method,
                         ng_solution= @ng_solution,
+                        part_id = @partId,
+                        machine_type_id = @machine_type_id,
                     display_order = @display_order
                 WHERE id = @id";
 
@@ -352,6 +403,8 @@ namespace MaintenanceApp.Infrastructure
             cmd.Parameters.AddWithValue("method", method);
             cmd.Parameters.AddWithValue("ng_solution", ng_solution);
             cmd.Parameters.AddWithValue("display_order", display_order);
+            cmd.Parameters.AddWithValue("partId", partId);
+            cmd.Parameters.AddWithValue("machine_type_id", machine_type_id);
 
             cmd.ExecuteNonQuery();
 
@@ -415,6 +468,98 @@ namespace MaintenanceApp.Infrastructure
             using var cmd = new NpgsqlCommand(sql, conn);
             cmd.Parameters.AddWithValue("idMachine", idMachine);
             cmd.ExecuteNonQuery();
+        }
+        public DataTable SearchHistory(
+            string machineCode,
+            string userId,
+            string result,
+            DateTime? fromDate,
+            DateTime? toDate)
+        {
+            using var conn = new NpgsqlConnection(_connectionString);
+
+            var sql = @"SELECT
+                    
+                    mh.machine_code,
+                    mh.user_id,
+                    mt.machine_type_name,
+                    mp.part_name,
+                    mi.item_name,
+                    mi.standard,
+                    mi.method,
+                    mi.ng_solution,
+                    mh.item_id,
+                    mh.result,
+                    mh.check_date
+                
+
+                FROM maintenance_history mh
+
+                JOIN maintenance_item mi 
+                    ON mh.item_id = mi.id
+
+                JOIN machine_part mp 
+                    ON mi.part_id = mp.id
+
+                JOIN machine_type mt 
+                    ON mp.machine_type_id = mt.id
+
+                WHERE mh.sheet_id = (
+                    SELECT mh2.sheet_id
+                    FROM maintenance_history mh2
+                    WHERE 
+                        (@machineCode IS NULL OR mh2.machine_code ILIKE '%' || @machineCode || '%')
+                    AND (@userId IS NULL OR mh2.user_id ILIKE '%' || @userId || '%')
+                    AND (@result IS NULL OR mh2.result = @result)
+                    AND (@fromDate IS NULL OR mh2.check_date >= @fromDate)
+                    AND (@toDate IS NULL OR mh2.check_date < @toDate + INTERVAL '1 day')
+    
+                    ORDER BY mh2.check_date DESC, mh2.sheet_id DESC
+                    LIMIT 1
+                    )
+
+                        ORDER BY mp.display_order, mi.display_order;";
+
+            using var cmd = new NpgsqlCommand(sql, conn);
+
+            cmd.Parameters.Add("machineCode", NpgsqlTypes.NpgsqlDbType.Text)
+                .Value = (object?)machineCode ?? DBNull.Value;
+
+            cmd.Parameters.Add("userId", NpgsqlTypes.NpgsqlDbType.Text)
+                .Value = (object?)userId ?? DBNull.Value;
+
+            cmd.Parameters.Add("result", NpgsqlTypes.NpgsqlDbType.Text)
+                .Value = (object?)result ?? DBNull.Value;
+
+            cmd.Parameters.Add("fromDate", NpgsqlTypes.NpgsqlDbType.Timestamp)
+                .Value = (object?)fromDate ?? DBNull.Value;
+
+            cmd.Parameters.Add("toDate", NpgsqlTypes.NpgsqlDbType.Timestamp)
+                .Value = (object?)toDate ?? DBNull.Value;
+
+            var dt = new DataTable();
+
+            using var adapter = new NpgsqlDataAdapter(cmd);
+            adapter.Fill(dt);
+
+            return dt;
+        }
+
+        public int CreateSheet(string machineCode, string userId)
+        {
+            using var conn = new NpgsqlConnection(_connectionString);
+            conn.Open();
+
+            var sql = @"INSERT INTO maintenance_sheet(machine_code,user_id)
+                VALUES (@machine,@user)
+                RETURNING id";
+
+            using var cmd = new NpgsqlCommand(sql, conn);
+
+            cmd.Parameters.AddWithValue("machine", machineCode);
+            cmd.Parameters.AddWithValue("user", userId);
+
+            return (int)cmd.ExecuteScalar();
         }
     }
 }

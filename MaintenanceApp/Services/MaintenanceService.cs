@@ -72,9 +72,9 @@ namespace MaintenanceApp.Services
             _repo.DeleteMachinePart(machinePartId);
         }
 
-        public void UpdateMaintenanceItem(int id,string itemName,string standard,string method,string ng_solution,int display_order)
+        public void UpdateMaintenanceItem(int id,string itemName,string standard,string method,string ng_solution,int display_order,int partId, int machineTypeId)
         {
-            _repo.UpdateMaintenanceItem(id,itemName,standard,method,ng_solution,display_order);
+            _repo.UpdateMaintenanceItem(id,itemName,standard,method,ng_solution,display_order, partId, machineTypeId);
         }
 
         internal void DeleteMaintenanceItem(int id)
@@ -102,5 +102,11 @@ namespace MaintenanceApp.Services
         {
            _repo.DeleteMachine(idMachine);
         }
+
+        internal DataTable SearchHistory(string? machineId, string? UserID, string? result, DateTime? fromTime, DateTime? toTime)
+        {
+            return _repo.SearchHistory(machineId, UserID, result, fromTime, toTime);
+        }
+        
     }
 }

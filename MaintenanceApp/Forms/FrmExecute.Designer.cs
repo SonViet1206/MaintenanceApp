@@ -31,6 +31,7 @@
             DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmExecute));
             panel1 = new Panel();
+            textBox1 = new TextBox();
             btnSave = new Button();
             btnAllOK = new Button();
             btnRun = new Button();
@@ -56,6 +57,7 @@
             // 
             // panel1
             // 
+            panel1.Controls.Add(textBox1);
             panel1.Controls.Add(btnSave);
             panel1.Controls.Add(btnAllOK);
             panel1.Controls.Add(btnRun);
@@ -68,6 +70,15 @@
             panel1.Name = "panel1";
             panel1.Size = new Size(1898, 204);
             panel1.TabIndex = 0;
+            // 
+            // textBox1
+            // 
+            textBox1.ForeColor = SystemColors.InactiveBorder;
+            textBox1.Location = new Point(1884, 121);
+            textBox1.Name = "textBox1";
+            textBox1.Size = new Size(11, 37);
+            textBox1.TabIndex = 7;
+            textBox1.KeyDown += textBox1_KeyDown;
             // 
             // btnSave
             // 
@@ -182,6 +193,7 @@
             PartName.HeaderText = "Bộ phận";
             PartName.MinimumWidth = 8;
             PartName.Name = "PartName";
+            PartName.ReadOnly = true;
             // 
             // ItemName
             // 
@@ -189,6 +201,7 @@
             ItemName.HeaderText = "Nội dung kiểm tra";
             ItemName.MinimumWidth = 8;
             ItemName.Name = "ItemName";
+            ItemName.ReadOnly = true;
             // 
             // Standard
             // 
@@ -196,6 +209,7 @@
             Standard.HeaderText = "Tiêu chuẩn";
             Standard.MinimumWidth = 8;
             Standard.Name = "Standard";
+            Standard.ReadOnly = true;
             // 
             // Method
             // 
@@ -203,12 +217,14 @@
             Method.HeaderText = "Phương pháp";
             Method.MinimumWidth = 8;
             Method.Name = "Method";
+            Method.ReadOnly = true;
             // 
             // ng_solution
             // 
             ng_solution.HeaderText = "Phương pháp xử lý NG";
             ng_solution.MinimumWidth = 8;
             ng_solution.Name = "ng_solution";
+            ng_solution.ReadOnly = true;
             // 
             // OK
             // 
@@ -279,5 +295,6 @@
         private DataGridViewCheckBoxColumn OK;
         private DataGridViewCheckBoxColumn Clean;
         private DataGridViewCheckBoxColumn Replace;
+        private TextBox textBox1;
     }
 }

@@ -31,6 +31,12 @@
             DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle4 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle5 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle6 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle7 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle8 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle9 = new DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmSetup));
             tabControl1 = new TabControl();
             tabPage1 = new TabPage();
@@ -58,6 +64,7 @@
             tabPage3 = new TabPage();
             dgv_tab3 = new DataGridView();
             pnTab3 = new Panel();
+            btnLoad = new Button();
             btn_tab3_Delete = new Button();
             btn_tab3_FullDisplay = new Button();
             btn_tab3_Fix = new Button();
@@ -90,6 +97,19 @@
             label12 = new Label();
             btn_tab4_AddMachine = new Button();
             cbb_tab4_MachineType = new ComboBox();
+            tabPage5 = new TabPage();
+            textBox1 = new TextBox();
+            label15 = new Label();
+            textBox2 = new TextBox();
+            label16 = new Label();
+            textBox3 = new TextBox();
+            label17 = new Label();
+            textBox4 = new TextBox();
+            label18 = new Label();
+            textBox5 = new TextBox();
+            label19 = new Label();
+            textBox6 = new TextBox();
+            label20 = new Label();
             tabControl1.SuspendLayout();
             tabPage1.SuspendLayout();
             panel2.SuspendLayout();
@@ -107,6 +127,7 @@
             tabPage4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgv_tab4).BeginInit();
             panel4.SuspendLayout();
+            tabPage5.SuspendLayout();
             SuspendLayout();
             // 
             // tabControl1
@@ -115,6 +136,7 @@
             tabControl1.Controls.Add(tabPage2);
             tabControl1.Controls.Add(tabPage3);
             tabControl1.Controls.Add(tabPage4);
+            tabControl1.Controls.Add(tabPage5);
             tabControl1.Dock = DockStyle.Fill;
             tabControl1.Location = new Point(0, 0);
             tabControl1.Name = "tabControl1";
@@ -147,18 +169,27 @@
             // dgvMachineType
             // 
             dgvMachineType.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dgvMachineType.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = SystemColors.Window;
-            dataGridViewCellStyle1.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            dataGridViewCellStyle1.ForeColor = SystemColors.ControlText;
+            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = SystemColors.Control;
+            dataGridViewCellStyle1.Font = new Font("Segoe UI", 11F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            dataGridViewCellStyle1.ForeColor = SystemColors.WindowText;
             dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
             dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
             dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
-            dgvMachineType.DefaultCellStyle = dataGridViewCellStyle1;
+            dgvMachineType.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dgvMachineType.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle2.BackColor = SystemColors.Window;
+            dataGridViewCellStyle2.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            dataGridViewCellStyle2.ForeColor = SystemColors.ControlText;
+            dataGridViewCellStyle2.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.True;
+            dgvMachineType.DefaultCellStyle = dataGridViewCellStyle2;
             dgvMachineType.Dock = DockStyle.Fill;
             dgvMachineType.Location = new Point(0, 0);
             dgvMachineType.Name = "dgvMachineType";
+            dgvMachineType.RowHeadersVisible = false;
             dgvMachineType.RowHeadersWidth = 62;
             dgvMachineType.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvMachineType.Size = new Size(1884, 787);
@@ -253,10 +284,27 @@
             dgvListPart.AllowUserToDeleteRows = false;
             dgvListPart.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvListPart.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+            dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle3.BackColor = SystemColors.Control;
+            dataGridViewCellStyle3.Font = new Font("Segoe UI", 11F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            dataGridViewCellStyle3.ForeColor = SystemColors.WindowText;
+            dataGridViewCellStyle3.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = DataGridViewTriState.True;
+            dgvListPart.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
             dgvListPart.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewCellStyle4.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle4.BackColor = SystemColors.Window;
+            dataGridViewCellStyle4.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            dataGridViewCellStyle4.ForeColor = SystemColors.ControlText;
+            dataGridViewCellStyle4.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = DataGridViewTriState.False;
+            dgvListPart.DefaultCellStyle = dataGridViewCellStyle4;
             dgvListPart.Dock = DockStyle.Fill;
             dgvListPart.Location = new Point(3, 257);
             dgvListPart.Name = "dgvListPart";
+            dgvListPart.RowHeadersVisible = false;
             dgvListPart.RowHeadersWidth = 62;
             dgvListPart.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvListPart.Size = new Size(1884, 726);
@@ -372,10 +420,10 @@
             // 
             tabPage3.Controls.Add(dgv_tab3);
             tabPage3.Controls.Add(pnTab3);
-            tabPage3.Location = new Point(4, 39);
+            tabPage3.Location = new Point(4, 34);
             tabPage3.Name = "tabPage3";
             tabPage3.Padding = new Padding(3);
-            tabPage3.Size = new Size(1890, 981);
+            tabPage3.Size = new Size(1890, 986);
             tabPage3.TabIndex = 2;
             tabPage3.Text = "Quy trình bảo dưỡng";
             tabPage3.UseVisualStyleBackColor = true;
@@ -386,15 +434,32 @@
             dgv_tab3.AllowUserToDeleteRows = false;
             dgv_tab3.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgv_tab3.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+            dataGridViewCellStyle5.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle5.BackColor = SystemColors.Control;
+            dataGridViewCellStyle5.Font = new Font("Segoe UI", 11F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            dataGridViewCellStyle5.ForeColor = SystemColors.WindowText;
+            dataGridViewCellStyle5.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle5.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle5.WrapMode = DataGridViewTriState.True;
+            dgv_tab3.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
             dgv_tab3.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewCellStyle6.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle6.BackColor = SystemColors.Window;
+            dataGridViewCellStyle6.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            dataGridViewCellStyle6.ForeColor = SystemColors.ControlText;
+            dataGridViewCellStyle6.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle6.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle6.WrapMode = DataGridViewTriState.True;
+            dgv_tab3.DefaultCellStyle = dataGridViewCellStyle6;
             dgv_tab3.Dock = DockStyle.Fill;
             dgv_tab3.Location = new Point(640, 3);
             dgv_tab3.Name = "dgv_tab3";
+            dgv_tab3.RowHeadersVisible = false;
             dgv_tab3.RowHeadersWidth = 62;
-            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.True;
-            dgv_tab3.RowsDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle7.WrapMode = DataGridViewTriState.True;
+            dgv_tab3.RowsDefaultCellStyle = dataGridViewCellStyle7;
             dgv_tab3.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgv_tab3.Size = new Size(1247, 975);
+            dgv_tab3.Size = new Size(1247, 980);
             dgv_tab3.TabIndex = 31;
             dgv_tab3.CellClick += dgv_tab3_CellClick;
             dgv_tab3.DataBindingComplete += dgv_tab3_DataBindingComplete;
@@ -402,6 +467,7 @@
             // 
             // pnTab3
             // 
+            pnTab3.Controls.Add(btnLoad);
             pnTab3.Controls.Add(btn_tab3_Delete);
             pnTab3.Controls.Add(btn_tab3_FullDisplay);
             pnTab3.Controls.Add(btn_tab3_Fix);
@@ -425,12 +491,22 @@
             pnTab3.Font = new Font("Segoe UI", 8F, FontStyle.Regular, GraphicsUnit.Point, 0);
             pnTab3.Location = new Point(3, 3);
             pnTab3.Name = "pnTab3";
-            pnTab3.Size = new Size(637, 975);
+            pnTab3.Size = new Size(637, 980);
             pnTab3.TabIndex = 30;
+            // 
+            // btnLoad
+            // 
+            btnLoad.Location = new Point(581, 117);
+            btnLoad.Name = "btnLoad";
+            btnLoad.Size = new Size(53, 31);
+            btnLoad.TabIndex = 33;
+            btnLoad.Text = "Load";
+            btnLoad.UseVisualStyleBackColor = true;
+            btnLoad.Click += btnLoad_click;
             // 
             // btn_tab3_Delete
             // 
-            btn_tab3_Delete.Location = new Point(350, 728);
+            btn_tab3_Delete.Location = new Point(311, 728);
             btn_tab3_Delete.Name = "btn_tab3_Delete";
             btn_tab3_Delete.Size = new Size(120, 43);
             btn_tab3_Delete.TabIndex = 32;
@@ -451,7 +527,7 @@
             // 
             // btn_tab3_Fix
             // 
-            btn_tab3_Fix.Location = new Point(224, 728);
+            btn_tab3_Fix.Location = new Point(185, 728);
             btn_tab3_Fix.Name = "btn_tab3_Fix";
             btn_tab3_Fix.Size = new Size(120, 43);
             btn_tab3_Fix.TabIndex = 30;
@@ -462,7 +538,7 @@
             // label7
             // 
             label7.AutoSize = true;
-            label7.Location = new Point(48, 120);
+            label7.Location = new Point(9, 120);
             label7.Name = "label7";
             label7.Size = new Size(103, 21);
             label7.TabIndex = 12;
@@ -471,7 +547,7 @@
             // txt_tab3_DisplayOrder
             // 
             txt_tab3_DisplayOrder.Font = new Font("Microsoft Sans Serif", 8F);
-            txt_tab3_DisplayOrder.Location = new Point(226, 639);
+            txt_tab3_DisplayOrder.Location = new Point(187, 639);
             txt_tab3_DisplayOrder.Maximum = new decimal(new int[] { 10000, 0, 0, 0 });
             txt_tab3_DisplayOrder.Name = "txt_tab3_DisplayOrder";
             txt_tab3_DisplayOrder.Size = new Size(104, 26);
@@ -481,7 +557,7 @@
             // label6
             // 
             label6.AutoSize = true;
-            label6.Location = new Point(48, 173);
+            label6.Location = new Point(9, 162);
             label6.Name = "label6";
             label6.Size = new Size(67, 21);
             label6.TabIndex = 14;
@@ -501,7 +577,7 @@
             // label5
             // 
             label5.AutoSize = true;
-            label5.Location = new Point(48, 226);
+            label5.Location = new Point(9, 204);
             label5.Name = "label5";
             label5.Size = new Size(101, 21);
             label5.TabIndex = 16;
@@ -510,7 +586,7 @@
             // label11
             // 
             label11.AutoSize = true;
-            label11.Location = new Point(58, 639);
+            label11.Location = new Point(19, 639);
             label11.Name = "label11";
             label11.Size = new Size(96, 21);
             label11.TabIndex = 26;
@@ -518,7 +594,7 @@
             // 
             // btn_tab3_AddIteamMaintenance
             // 
-            btn_tab3_AddIteamMaintenance.Location = new Point(102, 728);
+            btn_tab3_AddIteamMaintenance.Location = new Point(63, 728);
             btn_tab3_AddIteamMaintenance.Name = "btn_tab3_AddIteamMaintenance";
             btn_tab3_AddIteamMaintenance.Size = new Size(120, 43);
             btn_tab3_AddIteamMaintenance.TabIndex = 13;
@@ -529,16 +605,16 @@
             // txt_tab3_IteamName
             // 
             txt_tab3_IteamName.Font = new Font("Microsoft Sans Serif", 8F);
-            txt_tab3_IteamName.Location = new Point(224, 223);
+            txt_tab3_IteamName.Location = new Point(185, 204);
             txt_tab3_IteamName.Multiline = true;
             txt_tab3_IteamName.Name = "txt_tab3_IteamName";
-            txt_tab3_IteamName.Size = new Size(390, 37);
+            txt_tab3_IteamName.Size = new Size(390, 56);
             txt_tab3_IteamName.TabIndex = 17;
             // 
             // txt_tab3_Ng_solution
             // 
             txt_tab3_Ng_solution.Font = new Font("Microsoft Sans Serif", 8F);
-            txt_tab3_Ng_solution.Location = new Point(226, 480);
+            txt_tab3_Ng_solution.Location = new Point(187, 476);
             txt_tab3_Ng_solution.Multiline = true;
             txt_tab3_Ng_solution.Name = "txt_tab3_Ng_solution";
             txt_tab3_Ng_solution.Size = new Size(390, 134);
@@ -549,17 +625,16 @@
             cbb_tab3_MachineType.DisplayMember = "MachineTypeName";
             cbb_tab3_MachineType.Font = new Font("Microsoft Sans Serif", 8F);
             cbb_tab3_MachineType.FormattingEnabled = true;
-            cbb_tab3_MachineType.Location = new Point(224, 116);
+            cbb_tab3_MachineType.Location = new Point(185, 120);
             cbb_tab3_MachineType.Name = "cbb_tab3_MachineType";
             cbb_tab3_MachineType.Size = new Size(390, 28);
             cbb_tab3_MachineType.TabIndex = 18;
             cbb_tab3_MachineType.ValueMember = "Id";
-            cbb_tab3_MachineType.SelectedIndexChanged += cbb_tab3_MachineType_SelectedIndexChanged;
             // 
             // label10
             // 
             label10.AutoSize = true;
-            label10.Location = new Point(50, 483);
+            label10.Location = new Point(11, 476);
             label10.Name = "label10";
             label10.Size = new Size(167, 21);
             label10.TabIndex = 24;
@@ -569,7 +644,7 @@
             // 
             cbb_tab3_Part.Font = new Font("Microsoft Sans Serif", 8F);
             cbb_tab3_Part.FormattingEnabled = true;
-            cbb_tab3_Part.Location = new Point(224, 170);
+            cbb_tab3_Part.Location = new Point(185, 162);
             cbb_tab3_Part.Name = "cbb_tab3_Part";
             cbb_tab3_Part.Size = new Size(390, 28);
             cbb_tab3_Part.TabIndex = 19;
@@ -578,7 +653,7 @@
             // txt_tab3_method
             // 
             txt_tab3_method.Font = new Font("Microsoft Sans Serif", 8F);
-            txt_tab3_method.Location = new Point(224, 384);
+            txt_tab3_method.Location = new Point(185, 372);
             txt_tab3_method.Multiline = true;
             txt_tab3_method.Name = "txt_tab3_method";
             txt_tab3_method.Size = new Size(390, 90);
@@ -587,7 +662,7 @@
             // label8
             // 
             label8.AutoSize = true;
-            label8.Location = new Point(48, 269);
+            label8.Location = new Point(9, 274);
             label8.Name = "label8";
             label8.Size = new Size(146, 21);
             label8.TabIndex = 20;
@@ -596,7 +671,7 @@
             // label9
             // 
             label9.AutoSize = true;
-            label9.Location = new Point(48, 387);
+            label9.Location = new Point(9, 372);
             label9.Name = "label9";
             label9.Size = new Size(165, 21);
             label9.TabIndex = 22;
@@ -605,20 +680,20 @@
             // txt_tab3_standard
             // 
             txt_tab3_standard.Font = new Font("Microsoft Sans Serif", 8F);
-            txt_tab3_standard.Location = new Point(224, 266);
+            txt_tab3_standard.Location = new Point(185, 274);
             txt_tab3_standard.Multiline = true;
             txt_tab3_standard.Name = "txt_tab3_standard";
-            txt_tab3_standard.Size = new Size(390, 100);
+            txt_tab3_standard.Size = new Size(390, 84);
             txt_tab3_standard.TabIndex = 21;
             // 
             // tabPage4
             // 
             tabPage4.Controls.Add(dgv_tab4);
             tabPage4.Controls.Add(panel4);
-            tabPage4.Location = new Point(4, 34);
+            tabPage4.Location = new Point(4, 39);
             tabPage4.Name = "tabPage4";
             tabPage4.Padding = new Padding(3);
-            tabPage4.Size = new Size(1890, 986);
+            tabPage4.Size = new Size(1890, 981);
             tabPage4.TabIndex = 3;
             tabPage4.Text = "Máy";
             tabPage4.UseVisualStyleBackColor = true;
@@ -630,22 +705,31 @@
             dgv_tab4.AllowUserToResizeColumns = false;
             dgv_tab4.AllowUserToResizeRows = false;
             dgv_tab4.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dataGridViewCellStyle8.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle8.BackColor = SystemColors.Control;
+            dataGridViewCellStyle8.Font = new Font("Segoe UI", 11F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            dataGridViewCellStyle8.ForeColor = SystemColors.WindowText;
+            dataGridViewCellStyle8.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle8.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle8.WrapMode = DataGridViewTriState.True;
+            dgv_tab4.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle8;
             dgv_tab4.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = SystemColors.Window;
-            dataGridViewCellStyle3.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            dataGridViewCellStyle3.ForeColor = SystemColors.ControlText;
-            dataGridViewCellStyle3.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = DataGridViewTriState.True;
-            dgv_tab4.DefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle9.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle9.BackColor = SystemColors.Window;
+            dataGridViewCellStyle9.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            dataGridViewCellStyle9.ForeColor = SystemColors.ControlText;
+            dataGridViewCellStyle9.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle9.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle9.WrapMode = DataGridViewTriState.True;
+            dgv_tab4.DefaultCellStyle = dataGridViewCellStyle9;
             dgv_tab4.Dock = DockStyle.Fill;
             dgv_tab4.Location = new Point(3, 257);
             dgv_tab4.MultiSelect = false;
             dgv_tab4.Name = "dgv_tab4";
+            dgv_tab4.RowHeadersVisible = false;
             dgv_tab4.RowHeadersWidth = 62;
             dgv_tab4.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgv_tab4.Size = new Size(1884, 726);
+            dgv_tab4.Size = new Size(1884, 721);
             dgv_tab4.TabIndex = 29;
             dgv_tab4.CellClick += dgv_tab4_CellClick;
             dgv_tab4.DataBindingComplete += dgv_tab4_DataBindingComplete;
@@ -759,6 +843,124 @@
             cbb_tab4_MachineType.TabIndex = 23;
             cbb_tab4_MachineType.SelectedIndexChanged += cbb_tab4_MachineType_SelectedIndexChanged;
             // 
+            // tabPage5
+            // 
+            tabPage5.Controls.Add(textBox4);
+            tabPage5.Controls.Add(label18);
+            tabPage5.Controls.Add(textBox5);
+            tabPage5.Controls.Add(label19);
+            tabPage5.Controls.Add(textBox6);
+            tabPage5.Controls.Add(label20);
+            tabPage5.Controls.Add(textBox3);
+            tabPage5.Controls.Add(label17);
+            tabPage5.Controls.Add(textBox2);
+            tabPage5.Controls.Add(label16);
+            tabPage5.Controls.Add(textBox1);
+            tabPage5.Controls.Add(label15);
+            tabPage5.Location = new Point(4, 39);
+            tabPage5.Name = "tabPage5";
+            tabPage5.Padding = new Padding(3);
+            tabPage5.Size = new Size(1890, 981);
+            tabPage5.TabIndex = 4;
+            tabPage5.Text = "Thông số khác";
+            tabPage5.UseVisualStyleBackColor = true;
+            // 
+            // textBox1
+            // 
+            textBox1.Location = new Point(671, 264);
+            textBox1.Name = "textBox1";
+            textBox1.Size = new Size(792, 37);
+            textBox1.TabIndex = 24;
+            // 
+            // label15
+            // 
+            label15.AutoSize = true;
+            label15.Location = new Point(390, 267);
+            label15.Name = "label15";
+            label15.Size = new Size(87, 30);
+            label15.TabIndex = 23;
+            label15.Text = "IP Host:";
+            // 
+            // textBox2
+            // 
+            textBox2.Location = new Point(671, 317);
+            textBox2.Name = "textBox2";
+            textBox2.Size = new Size(792, 37);
+            textBox2.TabIndex = 26;
+            // 
+            // label16
+            // 
+            label16.AutoSize = true;
+            label16.Location = new Point(390, 320);
+            label16.Name = "label16";
+            label16.Size = new Size(107, 30);
+            label16.TabIndex = 25;
+            label16.Text = "DataBase:";
+            // 
+            // textBox3
+            // 
+            textBox3.Location = new Point(671, 370);
+            textBox3.Name = "textBox3";
+            textBox3.Size = new Size(792, 37);
+            textBox3.TabIndex = 28;
+            // 
+            // label17
+            // 
+            label17.AutoSize = true;
+            label17.Location = new Point(390, 479);
+            label17.Name = "label17";
+            label17.Size = new Size(62, 30);
+            label17.TabIndex = 27;
+            label17.Text = "User:";
+            // 
+            // textBox4
+            // 
+            textBox4.Location = new Point(671, 529);
+            textBox4.Name = "textBox4";
+            textBox4.Size = new Size(792, 37);
+            textBox4.TabIndex = 34;
+            // 
+            // label18
+            // 
+            label18.AutoSize = true;
+            label18.Location = new Point(390, 532);
+            label18.Name = "label18";
+            label18.Size = new Size(178, 30);
+            label18.TabIndex = 33;
+            label18.Text = "Thư mục xuất file";
+            // 
+            // textBox5
+            // 
+            textBox5.Location = new Point(671, 476);
+            textBox5.Name = "textBox5";
+            textBox5.Size = new Size(792, 37);
+            textBox5.TabIndex = 32;
+            // 
+            // label19
+            // 
+            label19.AutoSize = true;
+            label19.Location = new Point(390, 373);
+            label19.Name = "label19";
+            label19.Size = new Size(52, 30);
+            label19.TabIndex = 31;
+            label19.Text = "Port";
+            // 
+            // textBox6
+            // 
+            textBox6.Location = new Point(671, 423);
+            textBox6.Name = "textBox6";
+            textBox6.Size = new Size(792, 37);
+            textBox6.TabIndex = 30;
+            // 
+            // label20
+            // 
+            label20.AutoSize = true;
+            label20.Location = new Point(390, 426);
+            label20.Name = "label20";
+            label20.Size = new Size(103, 30);
+            label20.TabIndex = 29;
+            label20.Text = "Password";
+            // 
             // FrmSetup
             // 
             AutoScaleDimensions = new SizeF(12F, 30F);
@@ -794,6 +996,8 @@
             ((System.ComponentModel.ISupportInitialize)dgv_tab4).EndInit();
             panel4.ResumeLayout(false);
             panel4.PerformLayout();
+            tabPage5.ResumeLayout(false);
+            tabPage5.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -857,5 +1061,19 @@
         private Label label14;
         private ComboBox cbb_tab4_MachineCode;
         private Button button3;
+        private Button btnLoad;
+        private TabPage tabPage5;
+        private TextBox textBox3;
+        private Label label17;
+        private TextBox textBox2;
+        private Label label16;
+        private TextBox textBox1;
+        private Label label15;
+        private TextBox textBox4;
+        private Label label18;
+        private TextBox textBox5;
+        private Label label19;
+        private TextBox textBox6;
+        private Label label20;
     }
 }
