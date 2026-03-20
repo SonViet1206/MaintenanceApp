@@ -130,6 +130,8 @@
             dtpFrom.Name = "dtpFrom";
             dtpFrom.Size = new Size(156, 31);
             dtpFrom.TabIndex = 7;
+            dtpFrom.Value = new DateTime(2026, 3, 20, 0, 0, 0, 0);
+            dtpFrom.ValueChanged += dtpFrom_ValueChanged;
             // 
             // btnPrint
             // 

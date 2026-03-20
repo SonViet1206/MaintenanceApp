@@ -37,6 +37,7 @@ namespace MaintenanceApp.Interfaces
             DateTime? fromDate,
             DateTime? toDate);
         int CreateSheet(string machineCode, string userId);
+        DataTable GetHistory(string machineCode, DateTime? from, DateTime? to);
 
 
 

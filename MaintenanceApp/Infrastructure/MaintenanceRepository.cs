@@ -561,5 +561,58 @@ namespace MaintenanceApp.Infrastructure
 
             return (int)cmd.ExecuteScalar();
         }
+        public DataTable GetHistory(string machineCode, DateTime? from, DateTime? to)
+        {
+            using var conn = new NpgsqlConnection(_connectionString);
+            conn.Open();
+
+            var sql = @"SELECT 
+                mh.sheet_id,
+                mh.machine_code,
+                mh.user_id,
+                mt.machine_type_name,   -- ✔ dùng được
+
+                mp.part_name,
+                mi.item_name,
+                mi.standard,
+                mi.method,
+                mi.ng_solution,
+
+                mh.item_id,
+                mh.result,
+                mh.check_date,
+
+                mp.display_order,
+                mi.display_order
+
+            FROM maintenance_history mh
+
+            JOIN maintenance_item mi ON mh.item_id = mi.id
+            JOIN machine_part mp ON mi.part_id = mp.id
+            JOIN machine_type mt ON mp.machine_type_id = mt.id   -- 🔥 FIX
+
+            WHERE 
+                (@machineCode IS NULL OR mh.machine_code = @machineCode)
+            AND (@fromDate IS NULL OR mh.check_date >= @fromDate)
+            AND (@toDate IS NULL OR mh.check_date < @toDate + INTERVAL '1 day')
+
+            ORDER BY 
+                mh.check_date DESC,
+                mh.sheet_id,
+                mp.display_order,
+                mi.display_order";
+
+            using var cmd = new NpgsqlCommand(sql, conn);
+
+            cmd.Parameters.AddWithValue("machineCode", (object?)machineCode ?? DBNull.Value);
+            cmd.Parameters.AddWithValue("fromDate", (object?)from ?? DBNull.Value);
+            cmd.Parameters.AddWithValue("toDate", (object?)to ?? DBNull.Value);
+
+            var dt = new DataTable();
+            using var adapter = new NpgsqlDataAdapter(cmd);
+            adapter.Fill(dt);
+
+            return dt;
+        }
     }
 }

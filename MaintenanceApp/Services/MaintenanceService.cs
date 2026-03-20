@@ -107,6 +107,10 @@ namespace MaintenanceApp.Services
         {
             return _repo.SearchHistory(machineId, UserID, result, fromTime, toTime);
         }
-        
+
+        internal DataTable GetHistory(string? machine, DateTime? from, DateTime? to)
+        {
+            return _repo.GetHistory(machine, from, to);
+        }
     }
 }
