@@ -12,7 +12,7 @@ namespace MaintenanceApp.Interfaces
     {
         List<MaintenanceItem> GetItemsByMachine(string machineCode);
 
-        void SaveHistory(List<MaintenanceHistory> history);
+        int SaveHistory(List<MaintenanceHistory> history);
         void AddMachineType(string name);
         void AddMachinePart(int typeId, string partName, int order);
         void AddMaintenanceItem(int machine_type_id, int part_id, string item_name, string standard, string method, string ng_solution, int display_order);
@@ -39,9 +39,14 @@ namespace MaintenanceApp.Interfaces
         int CreateSheet(string machineCode, string userId);
         DataTable GetHistory(string machineCode, DateTime? from, DateTime? to);
 
-
-
-
+        string GetMachineTypeName(string idMachine);
+        int Add_air_quality_checklist(int sheet_id, double value1, double value2,double value3);
+         //DataTable Get_air_quality_checklist(int machine_type_id);
+         //void Update_air_quality_checklist(int id, string item_name, string standard, string method, string ng_solution, int display_order);
+         //void Delete_air_quality_checklist(int id);
+         void Update_maintenance_history(int id, int id_air);
+        DataTable Get_air_quality_data(int machine_type_id);
+        
 
     }
 }

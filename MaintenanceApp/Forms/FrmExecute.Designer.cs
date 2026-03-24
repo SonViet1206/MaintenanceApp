@@ -31,6 +31,11 @@
             DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmExecute));
             panel1 = new Panel();
+            label4 = new Label();
+            label3 = new Label();
+            numValue3 = new NumericUpDown();
+            numValue2 = new NumericUpDown();
+            numValue1 = new NumericUpDown();
             textBox1 = new TextBox();
             btnSave = new Button();
             btnAllOK = new Button();
@@ -50,13 +55,19 @@
             OK = new DataGridViewCheckBoxColumn();
             Clean = new DataGridViewCheckBoxColumn();
             Replace = new DataGridViewCheckBoxColumn();
+            pnPeko = new Panel();
             panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numValue3).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numValue2).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numValue1).BeginInit();
             panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvChecklist).BeginInit();
+            pnPeko.SuspendLayout();
             SuspendLayout();
             // 
             // panel1
             // 
+            panel1.Controls.Add(pnPeko);
             panel1.Controls.Add(textBox1);
             panel1.Controls.Add(btnSave);
             panel1.Controls.Add(btnAllOK);
@@ -71,6 +82,57 @@
             panel1.Size = new Size(1898, 204);
             panel1.TabIndex = 0;
             // 
+            // label4
+            // 
+            label4.AutoSize = true;
+            label4.Location = new Point(450, 24);
+            label4.Name = "label4";
+            label4.Size = new Size(22, 30);
+            label4.TabIndex = 12;
+            label4.Text = "-";
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Location = new Point(267, 24);
+            label3.Name = "label3";
+            label3.Size = new Size(22, 30);
+            label3.TabIndex = 11;
+            label3.Text = "-";
+            // 
+            // numValue3
+            // 
+            numValue3.DecimalPlaces = 2;
+            numValue3.Increment = new decimal(new int[] { 1, 0, 0, 131072 });
+            numValue3.Location = new Point(480, 21);
+            numValue3.Maximum = new decimal(new int[] { 1410065407, 2, 0, 0 });
+            numValue3.Name = "numValue3";
+            numValue3.Size = new Size(145, 37);
+            numValue3.TabIndex = 10;
+            numValue3.TextAlign = HorizontalAlignment.Center;
+            // 
+            // numValue2
+            // 
+            numValue2.DecimalPlaces = 2;
+            numValue2.Increment = new decimal(new int[] { 1, 0, 0, 131072 });
+            numValue2.Location = new Point(297, 21);
+            numValue2.Maximum = new decimal(new int[] { 1410065407, 2, 0, 0 });
+            numValue2.Name = "numValue2";
+            numValue2.Size = new Size(145, 37);
+            numValue2.TabIndex = 9;
+            numValue2.TextAlign = HorizontalAlignment.Center;
+            // 
+            // numValue1
+            // 
+            numValue1.DecimalPlaces = 2;
+            numValue1.Increment = new decimal(new int[] { 1, 0, 0, 131072 });
+            numValue1.Location = new Point(114, 21);
+            numValue1.Maximum = new decimal(new int[] { 1410065407, 2, 0, 0 });
+            numValue1.Name = "numValue1";
+            numValue1.Size = new Size(145, 37);
+            numValue1.TabIndex = 8;
+            numValue1.TextAlign = HorizontalAlignment.Center;
+            // 
             // textBox1
             // 
             textBox1.ForeColor = SystemColors.InactiveBorder;
@@ -82,7 +144,7 @@
             // 
             // btnSave
             // 
-            btnSave.Location = new Point(996, 143);
+            btnSave.Location = new Point(1431, 40);
             btnSave.Name = "btnSave";
             btnSave.Size = new Size(131, 55);
             btnSave.TabIndex = 6;
@@ -104,7 +166,7 @@
             // 
             // btnRun
             // 
-            btnRun.Location = new Point(821, 143);
+            btnRun.Location = new Point(1293, 40);
             btnRun.Name = "btnRun";
             btnRun.Size = new Size(131, 55);
             btnRun.TabIndex = 4;
@@ -115,7 +177,7 @@
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(696, 107);
+            label2.Location = new Point(820, 56);
             label2.Name = "label2";
             label2.Size = new Size(84, 30);
             label2.TabIndex = 3;
@@ -123,7 +185,7 @@
             // 
             // txtUserID
             // 
-            txtUserID.Location = new Point(821, 100);
+            txtUserID.Location = new Point(945, 49);
             txtUserID.Name = "txtUserID";
             txtUserID.Size = new Size(306, 37);
             txtUserID.TabIndex = 2;
@@ -131,7 +193,7 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(696, 52);
+            label1.Location = new Point(363, 56);
             label1.Name = "label1";
             label1.Size = new Size(122, 30);
             label1.TabIndex = 1;
@@ -139,7 +201,7 @@
             // 
             // txtMachineID
             // 
-            txtMachineID.Location = new Point(821, 45);
+            txtMachineID.Location = new Point(488, 49);
             txtMachineID.Name = "txtMachineID";
             txtMachineID.Size = new Size(306, 37);
             txtMachineID.TabIndex = 0;
@@ -253,6 +315,19 @@
             Replace.Name = "Replace";
             Replace.Width = 102;
             // 
+            // pnPeko
+            // 
+            pnPeko.Controls.Add(numValue2);
+            pnPeko.Controls.Add(label4);
+            pnPeko.Controls.Add(numValue1);
+            pnPeko.Controls.Add(label3);
+            pnPeko.Controls.Add(numValue3);
+            pnPeko.Location = new Point(689, 101);
+            pnPeko.Name = "pnPeko";
+            pnPeko.Size = new Size(676, 88);
+            pnPeko.TabIndex = 13;
+            pnPeko.Visible = false;
+            // 
             // FrmExecute
             // 
             AutoScaleDimensions = new SizeF(12F, 30F);
@@ -269,8 +344,13 @@
             KeyPress += FrmExecute_KeyPress;
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numValue3).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numValue2).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numValue1).EndInit();
             panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dgvChecklist).EndInit();
+            pnPeko.ResumeLayout(false);
+            pnPeko.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -286,6 +366,7 @@
         private DataGridView dgvChecklist;
         private Button btnAllOK;
         private Button btnSave;
+        private TextBox textBox1;
         private DataGridViewTextBoxColumn ItemId;
         private DataGridViewTextBoxColumn PartName;
         private DataGridViewTextBoxColumn ItemName;
@@ -295,6 +376,11 @@
         private DataGridViewCheckBoxColumn OK;
         private DataGridViewCheckBoxColumn Clean;
         private DataGridViewCheckBoxColumn Replace;
-        private TextBox textBox1;
+        private Label label4;
+        private Label label3;
+        private NumericUpDown numValue3;
+        private NumericUpDown numValue2;
+        private NumericUpDown numValue1;
+        private Panel pnPeko;
     }
 }

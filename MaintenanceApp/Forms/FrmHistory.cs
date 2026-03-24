@@ -49,6 +49,7 @@ namespace MaintenanceApp.Forms
             dtHistory.Rows.Clear();
             //thông báo : chỉ tìm kiếm ngày gần nhất hay tất cả
             _dr = MessageBox.Show("Chỉ tìm ngày gần nhất đúng chứ?", "Câu hỏi", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1);
+
             if (_dr == DialogResult.Yes)
             {
                 dtHistory = _service.SearchHistory(machine, user, result, from, to);
@@ -59,6 +60,7 @@ namespace MaintenanceApp.Forms
                 dtHistory = _service.GetHistory(machine, from, to);
             }
 
+            
 
             // Xóa dữ liệu cũ
             dgvHistory.Rows.Clear();
@@ -105,7 +107,7 @@ namespace MaintenanceApp.Forms
             int row = 1;
 
             // ===== HEADER =====
-            ws.Cell(row, 1).Value = "MAINTENANCE CHECK SHEET";
+            ws.Cell(row, 1).Value = "PHIẾU BẢO DƯỠNG";
             ws.Range(row, 1, row, 8).Merge().Style
                 .Font.SetBold()
                 .Font.SetFontSize(16)
@@ -128,8 +130,10 @@ namespace MaintenanceApp.Forms
                                         .ToString("yyyy-MM-dd");
             //ws.Cell(row, 7).Value = Convert.ToDateTime(dt.Rows[0]["check_date"])
             //                            .ToString("yyyy-MM-dd");
-
-
+            row++;
+            ws.Cell(row++, 5).Value = $"o:OK";
+            ws.Cell(row++, 5).Value = $"∆:Vệ sinh,điều chỉnh(清掃、調整)";
+            ws.Cell(row++, 5).Value = "x:Thay thế(交換する)";
 
             row += 2;
 
@@ -259,8 +263,8 @@ namespace MaintenanceApp.Forms
                 MessageBox.Show("Export thành công!");
 
             }
-            
-            
+
+
         }
         public void ExportToExcel_depenOn_time(DataTable dt)
         {
@@ -288,12 +292,7 @@ namespace MaintenanceApp.Forms
 
             int row = 1;
 
-            // ===== HEADER =====
-            ws.Cell(row, 1).Value = "MAINTENANCE HISTORY MATRIX";
-            ws.Range(row, 1, row, 20).Merge().Style
-                .Font.SetBold()
-                .Font.SetFontSize(16)
-                .Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+
 
             row += 2;
 
@@ -302,6 +301,9 @@ namespace MaintenanceApp.Forms
             string user = dt.Rows[0]["user_id"]?.ToString();
 
             ws.Cell(row, 1).Value = $"Machine: {machine}";
+            ws.Cell(row++, 5).Value = $"o:OK";
+            ws.Cell(row++, 5).Value = $"∆:Vệ sinh,điều chỉnh(清掃、調整)";
+            ws.Cell(row++, 5).Value = "x:Thay thế(交換する)";
 
 
             row += 2;
@@ -423,7 +425,12 @@ namespace MaintenanceApp.Forms
 
                 currentRow = end + 1;
             }
-
+            // ===== HEADER =====
+            ws.Cell(1, 1).Value = "PHIẾU BẢO DƯỠNG";
+            ws.Range(1, 1, 1, lastCol).Merge().Style
+                .Font.SetBold()
+                .Font.SetFontSize(16)
+                .Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
             // ===== STYLE =====
             ws.Columns(2, 4).Style.Alignment.WrapText = true;
 
@@ -432,7 +439,7 @@ namespace MaintenanceApp.Forms
             ws.Range(headerRow, 1, lastRow, lastCol).Style.Alignment
                 .SetHorizontal(XLAlignmentHorizontalValues.Center);
 
-            ws.Columns(2, 4).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Left;
+            //ws.Columns(2, 4).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Left;
 
             // ===== BORDER =====
             ws.Range(headerRow, 1, lastRow, lastCol).Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
@@ -495,7 +502,7 @@ namespace MaintenanceApp.Forms
             int row = 1;
 
             // ===== HEADER =====
-            ws.Cell(row, 1).Value = "MAINTENANCE HISTORY MATRIX (12 MONTHS)";
+            ws.Cell(row, 1).Value = "PHIẾU BẢO DƯỠNG";
             ws.Range(row, 1, row, 17).Merge().Style
                 .Font.SetBold()
                 .Font.SetFontSize(16)
@@ -507,8 +514,10 @@ namespace MaintenanceApp.Forms
             string machine = dt.Rows[0]["machine_code"]?.ToString();
 
             ws.Cell(row, 1).Value = $"Machine: {machine}";
-            ws.Range(row, 1, row, 4).Merge();
-
+            ws.Range(row, 1, row, 2).Merge();
+            ws.Cell(row++, 5).Value = $"o:OK";
+            ws.Cell(row++, 5).Value = $"∆:Vệ sinh,điều chỉnh(清掃、調整)";
+            ws.Cell(row++, 5).Value = "x:Thay thế(交換する)";
             row += 2;
 
             int headerRow = row;
@@ -584,11 +593,11 @@ namespace MaintenanceApp.Forms
             // ===== DATA =====
             foreach (var item in items)
             {
-                ws.Cell(row, 1).Value = item["part_name"]?.ToString();
-                ws.Cell(row, 2).Value = item["item_name"]?.ToString();
-                ws.Cell(row, 3).Value = item["standard"]?.ToString();
-                ws.Cell(row, 4).Value = item["method"]?.ToString();
-                ws.Cell(row, 5).Value = item["ng_solution"]?.ToString();
+                ws.Cell(row, 1).Value = item["part_name"]?.ToString().Trim();
+                ws.Cell(row, 2).Value = item["item_name"]?.ToString().Trim();
+                ws.Cell(row, 3).Value = item["standard"]?.ToString().Trim();
+                ws.Cell(row, 4).Value = item["method"]?.ToString().Trim();
+                ws.Cell(row, 5).Value = item["ng_solution"]?.ToString().Trim();
 
                 col = 6;
 
@@ -661,8 +670,8 @@ namespace MaintenanceApp.Forms
             ws.Range(headerRow, 1, lastRow, lastCol).Style.Alignment
                 .SetVertical(XLAlignmentVerticalValues.Center);
             ws.Range(headerRow, 1, lastRow, lastCol).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
-
-            ws.Columns(2, 4).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Left;
+            ws.Range(headerRow, 1, lastRow, lastCol).Style.Alignment.SetVertical(XLAlignmentVerticalValues.Center);
+            //ws.Columns(2, 4).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Left;
 
             // ===== BORDER =====
             ws.Range(headerRow, 1, lastRow, lastCol).Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
@@ -742,6 +751,12 @@ namespace MaintenanceApp.Forms
             {
                 dtpFrom.Value = selectedDate;
             }
+        }
+
+        private void btnKhongkhi_Click(object sender, EventArgs e)
+        {
+            FrmKhongKhi frmKhongKhi = new FrmKhongKhi(_service.GetAir(txtMachineID.Text,dtpFrom.Value,dtpTo.Value));
+            frmKhongKhi.Show();
         }
     }
 }

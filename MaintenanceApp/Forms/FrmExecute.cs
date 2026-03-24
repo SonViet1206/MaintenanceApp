@@ -50,6 +50,14 @@ namespace MaintenanceApp.Forms
                     false
                 );
             }
+            if (_service.GetMachineTypeName($"{txtMachineID.Text}").ToUpper().Contains("PEKO"))
+            {
+                pnPeko.Visible = true;
+            }
+            else
+            {
+                pnPeko.Visible = false;
+            }
 
         }
         void dgvChecklist_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -108,7 +116,13 @@ namespace MaintenanceApp.Forms
                 });
             }
 
-            _service.SaveChecklist(histories);
+            int id_sheet=_service.SaveChecklist(histories);
+            if(_service.GetMachineTypeName(txtMachineID.Text.Trim()).ToUpper().Contains("PEKO"))
+            {
+
+                int id_air= _service.Add_air_quality_checklist(id_sheet, (double)numValue1.Value, (double)numValue2.Value, (double)numValue3.Value);
+                _service.Update_maintenance_history(id_sheet,id_air);
+            }    
             
 
             MessageBox.Show("Saved successfully");

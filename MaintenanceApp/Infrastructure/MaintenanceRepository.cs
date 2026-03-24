@@ -34,11 +34,13 @@ namespace MaintenanceApp.Infrastructure
             mi.standard,
             mi.method,
             mi.ng_solution
+            
         FROM machine m
         JOIN machine_part mp
             ON mp.machine_type_id = m.machine_type_id
         JOIN maintenance_item mi
             ON mi.part_id = mp.id
+        
         WHERE m.machine_code = @code
             AND mp.deleted = false
             AND mi.deleted = false
@@ -57,7 +59,7 @@ namespace MaintenanceApp.Infrastructure
                     ItemName = reader.GetString(2),
                     Standard = reader.GetString(3),
                     Method = reader.GetString(4),
-                    NgSolution=reader.GetString(5),
+                    NgSolution = reader.GetString(5),
                     PartName = reader.GetString(0)
                 });
             }
@@ -86,7 +88,7 @@ namespace MaintenanceApp.Infrastructure
         //        cmd.ExecuteNonQuery();
         //    }
         //}
-        public void SaveHistory(List<MaintenanceHistory> histories)
+        public int SaveHistory(List<MaintenanceHistory> histories)
         {
             using var conn = new NpgsqlConnection(_connectionString);
             conn.Open();
@@ -126,6 +128,7 @@ namespace MaintenanceApp.Infrastructure
                 }
 
                 tran.Commit();
+                return sheetId;
             }
             catch
             {
@@ -381,7 +384,7 @@ namespace MaintenanceApp.Infrastructure
             cmd.ExecuteNonQuery();
 
         }
-        public void UpdateMaintenanceItem(int id, string itemName, string standard, string method, string ng_solution, int display_order,int partId,int machine_type_id)
+        public void UpdateMaintenanceItem(int id, string itemName, string standard, string method, string ng_solution, int display_order, int partId, int machine_type_id)
         {
             using var conn = new NpgsqlConnection(_connectionString);
             conn.Open();
@@ -583,14 +586,19 @@ namespace MaintenanceApp.Infrastructure
                 mh.check_date,
 
                 mp.display_order,
-                mi.display_order
+                mi.display_order,
+                aqm.measure_value1,
+                aqm.measure_value2,
+                aqm.measure_value3
 
             FROM maintenance_history mh
 
             JOIN maintenance_item mi ON mh.item_id = mi.id
             JOIN machine_part mp ON mi.part_id = mp.id
             JOIN machine_type mt ON mp.machine_type_id = mt.id   -- 🔥 FIX
-
+            JOIN maintenance_sheet ms ON mh.sheet_id = ms.id   -- 🔥 JOIN đúng
+            LEFT JOIN air_quality_measurement aqm ON aqm.maintenance_sheet_id = ms.id
+                
             WHERE 
                 (@machineCode IS NULL OR mh.machine_code = @machineCode)
             AND (@fromDate IS NULL OR mh.check_date >= @fromDate)
@@ -613,6 +621,74 @@ namespace MaintenanceApp.Infrastructure
             adapter.Fill(dt);
 
             return dt;
+        }
+        public string GetMachineTypeName(string idMachine)
+        {
+            using var conn = new NpgsqlConnection(_connectionString);
+            conn.Open();
+            string sql = @"SELECT mt.machine_type_name
+                FROM machine m
+                JOIN machine_type mt ON m.machine_type_id = mt.id
+                WHERE m.machine_code = @idMachine";
+            using var cmd = new NpgsqlCommand(sql, conn);
+            cmd.Parameters.AddWithValue("idMachine", idMachine);
+            return (string)cmd.ExecuteScalar();
+
+        }
+        public int Add_air_quality_checklist(int sheet_id, double value1, double value2, double value3)
+        {
+            using var conn = new NpgsqlConnection(_connectionString);
+            conn.Open();
+            var sql = @"INSERT INTO air_quality_measurement(maintenance_sheet_id, measure_value1, measure_value2, measure_value3)
+                        VALUES (@sheet_id, @value1, @value2, @value3) RETURNING id";
+            using var cmd = new NpgsqlCommand(sql, conn);
+            cmd.Parameters.AddWithValue("sheet_id", sheet_id);
+            cmd.Parameters.AddWithValue("value1", value1);
+            cmd.Parameters.AddWithValue("value2", value2);
+            cmd.Parameters.AddWithValue("value3", value3);
+            var result = cmd.ExecuteScalar();
+
+            // Kiểm tra null trước khi ép kiểu
+            if (result != null && result != DBNull.Value)
+            {
+                return Convert.ToInt32(result);
+            }
+            throw new Exception("Không thể lấy được ID mới sau khi INSERT.");
+        }
+        public void Update_maintenance_history(int id, int id_air)
+        {
+            using var conn = new NpgsqlConnection(_connectionString);
+            conn.Open();
+            var sql = @"UPDATE maintenance_sheet
+                SET air_quality_measurement_id = @id_air
+                WHERE id = @id";
+            using var cmd = new NpgsqlCommand(sql, conn);
+            cmd.Parameters.AddWithValue("id", id);
+            cmd.Parameters.AddWithValue("id_air", id_air);
+            cmd.ExecuteNonQuery();
+        }
+        public DataTable Get_air_quality_data(int machine_code)
+        {
+            return null;
+            //try
+            //{
+            //    using var conn = new NpgsqlConnection(_connectionString);
+            //    conn.Open();
+            //    var sql = @"Select 
+            //                    air.measure_value1,
+            //                    air.measure_value2,
+            //                    air.measure_value3
+            //                from air_quality_measurement air
+            //                JOIN maintenance_sheet ms
+            //                ON air.id= ms.air_quality_measurement_id
+            //                WHERE ms.machine_code=@machine_code";
+
+            //}
+            //catch (Exception)
+            //{
+
+            //    throw;
+            //}
         }
     }
 }

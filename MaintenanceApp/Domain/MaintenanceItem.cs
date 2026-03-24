@@ -11,6 +11,7 @@ namespace MaintenanceApp.Domain
         public int Id { get; set; }
 
         public int MachineTypeId { get; set; }
+        public string MachineTypeName { get; set; }
 
         public int PartId { get; set; }
         public string PartName { get; set; }

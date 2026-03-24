@@ -21,9 +21,9 @@ namespace MaintenanceApp.Services
         {
             return _repo.GetItemsByMachine(machineCode);
         }
-        public void SaveChecklist(List<MaintenanceHistory> histories)
+        public int SaveChecklist(List<MaintenanceHistory> histories)
         {
-            _repo.SaveHistory(histories);
+            return _repo.SaveHistory(histories);
         }
         public void AddMachineType(string name)
         {
@@ -72,9 +72,9 @@ namespace MaintenanceApp.Services
             _repo.DeleteMachinePart(machinePartId);
         }
 
-        public void UpdateMaintenanceItem(int id,string itemName,string standard,string method,string ng_solution,int display_order,int partId, int machineTypeId)
+        public void UpdateMaintenanceItem(int id, string itemName, string standard, string method, string ng_solution, int display_order, int partId, int machineTypeId)
         {
-            _repo.UpdateMaintenanceItem(id,itemName,standard,method,ng_solution,display_order, partId, machineTypeId);
+            _repo.UpdateMaintenanceItem(id, itemName, standard, method, ng_solution, display_order, partId, machineTypeId);
         }
 
         internal void DeleteMaintenanceItem(int id)
@@ -95,12 +95,12 @@ namespace MaintenanceApp.Services
 
         internal void UpdateMachine(int idMachine, string machineName, int machine_type_id)
         {
-             _repo.UpdateMachine(idMachine, machineName, machine_type_id);
+            _repo.UpdateMachine(idMachine, machineName, machine_type_id);
         }
 
         internal void DeleteMachine(int idMachine)
         {
-           _repo.DeleteMachine(idMachine);
+            _repo.DeleteMachine(idMachine);
         }
 
         internal DataTable SearchHistory(string? machineId, string? UserID, string? result, DateTime? fromTime, DateTime? toTime)
@@ -111,6 +111,23 @@ namespace MaintenanceApp.Services
         internal DataTable GetHistory(string? machine, DateTime? from, DateTime? to)
         {
             return _repo.GetHistory(machine, from, to);
+        }
+        internal string GetMachineTypeName(string idMachine)
+        {
+            return _repo.GetMachineTypeName(idMachine);
+        }
+        internal int Add_air_quality_checklist(int sheet_id, double value1, double value2, double value3)
+        {
+            return _repo.Add_air_quality_checklist(sheet_id, value1, value2, value3);
+        }
+        internal void Update_maintenance_history(int id, int id_air)
+        {
+             _repo.Update_maintenance_history(id, id_air);
+        }
+
+        internal DataTable GetAir(string text, DateTime value1, DateTime value2)
+        {
+            return _repo.Get_air_quality_data(int.Parse(text));
         }
     }
 }

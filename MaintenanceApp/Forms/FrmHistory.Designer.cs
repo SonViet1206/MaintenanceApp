@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmHistory));
             panel1 = new Panel();
             label5 = new Label();
             cbbResult = new ComboBox();
@@ -55,12 +56,14 @@
             Clean = new DataGridViewCheckBoxColumn();
             Replace = new DataGridViewCheckBoxColumn();
             Time = new DataGridViewTextBoxColumn();
+            btnKhongkhi = new Button();
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvHistory).BeginInit();
             SuspendLayout();
             // 
             // panel1
             // 
+            panel1.Controls.Add(btnKhongkhi);
             panel1.Controls.Add(label5);
             panel1.Controls.Add(cbbResult);
             panel1.Controls.Add(label4);
@@ -76,7 +79,7 @@
             panel1.Dock = DockStyle.Top;
             panel1.Location = new Point(0, 0);
             panel1.Name = "panel1";
-            panel1.Size = new Size(1898, 87);
+            panel1.Size = new Size(1898, 167);
             panel1.TabIndex = 1;
             // 
             // label5
@@ -204,12 +207,12 @@
             dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
             dgvHistory.DefaultCellStyle = dataGridViewCellStyle1;
             dgvHistory.Dock = DockStyle.Fill;
-            dgvHistory.Location = new Point(0, 87);
+            dgvHistory.Location = new Point(0, 167);
             dgvHistory.Name = "dgvHistory";
             dgvHistory.ReadOnly = true;
             dgvHistory.RowHeadersVisible = false;
             dgvHistory.RowHeadersWidth = 62;
-            dgvHistory.Size = new Size(1898, 937);
+            dgvHistory.Size = new Size(1898, 857);
             dgvHistory.TabIndex = 2;
             // 
             // MachineCode
@@ -309,6 +312,17 @@
             Time.Name = "Time";
             Time.ReadOnly = true;
             // 
+            // btnKhongkhi
+            // 
+            btnKhongkhi.BackColor = SystemColors.ActiveCaption;
+            btnKhongkhi.Location = new Point(3, 106);
+            btnKhongkhi.Name = "btnKhongkhi";
+            btnKhongkhi.Size = new Size(139, 58);
+            btnKhongkhi.TabIndex = 13;
+            btnKhongkhi.Text = "Không khí";
+            btnKhongkhi.UseVisualStyleBackColor = false;
+            btnKhongkhi.Click += btnKhongkhi_Click;
+            // 
             // FrmHistory
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
@@ -316,8 +330,9 @@
             ClientSize = new Size(1898, 1024);
             Controls.Add(dgvHistory);
             Controls.Add(panel1);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "FrmHistory";
-            Text = "FrmTable";
+            Text = "Lịch sử";
             Load += FrmTable_Load;
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
@@ -354,5 +369,6 @@
         private DataGridViewCheckBoxColumn Clean;
         private DataGridViewCheckBoxColumn Replace;
         private DataGridViewTextBoxColumn Time;
+        private Button btnKhongkhi;
     }
 }
