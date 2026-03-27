@@ -31,6 +31,10 @@
             DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmHistory));
             panel1 = new Panel();
+            lblPage = new Label();
+            btnNext = new Button();
+            btnPrev = new Button();
+            btnKhongkhi = new Button();
             label5 = new Label();
             cbbResult = new ComboBox();
             label4 = new Label();
@@ -56,13 +60,15 @@
             Clean = new DataGridViewCheckBoxColumn();
             Replace = new DataGridViewCheckBoxColumn();
             Time = new DataGridViewTextBoxColumn();
-            btnKhongkhi = new Button();
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvHistory).BeginInit();
             SuspendLayout();
             // 
             // panel1
             // 
+            panel1.Controls.Add(lblPage);
+            panel1.Controls.Add(btnNext);
+            panel1.Controls.Add(btnPrev);
             panel1.Controls.Add(btnKhongkhi);
             panel1.Controls.Add(label5);
             panel1.Controls.Add(cbbResult);
@@ -82,28 +88,74 @@
             panel1.Size = new Size(1898, 167);
             panel1.TabIndex = 1;
             // 
+            // lblPage
+            // 
+            lblPage.AutoSize = true;
+            lblPage.Location = new Point(917, 133);
+            lblPage.Name = "lblPage";
+            lblPage.Size = new Size(131, 25);
+            lblPage.TabIndex = 16;
+            lblPage.Text = "-----------------";
+            lblPage.Visible = false;
+            // 
+            // btnNext
+            // 
+            btnNext.Location = new Point(1049, 126);
+            btnNext.Name = "btnNext";
+            btnNext.Size = new Size(36, 38);
+            btnNext.TabIndex = 15;
+            btnNext.Text = ">";
+            btnNext.UseVisualStyleBackColor = true;
+            btnNext.Visible = false;
+            btnNext.Click += btnNext_Click;
+            // 
+            // btnPrev
+            // 
+            btnPrev.Location = new Point(862, 126);
+            btnPrev.Name = "btnPrev";
+            btnPrev.Size = new Size(36, 38);
+            btnPrev.TabIndex = 14;
+            btnPrev.Text = "<";
+            btnPrev.UseVisualStyleBackColor = true;
+            btnPrev.Visible = false;
+            btnPrev.Click += btnPrev_Click;
+            // 
+            // btnKhongkhi
+            // 
+            btnKhongkhi.BackColor = SystemColors.ActiveCaption;
+            btnKhongkhi.Location = new Point(3, 106);
+            btnKhongkhi.Name = "btnKhongkhi";
+            btnKhongkhi.Size = new Size(139, 58);
+            btnKhongkhi.TabIndex = 13;
+            btnKhongkhi.Text = "Không khí";
+            btnKhongkhi.UseVisualStyleBackColor = false;
+            btnKhongkhi.Visible = false;
+            btnKhongkhi.Click += btnKhongkhi_Click;
+            // 
             // label5
             // 
             label5.AutoSize = true;
-            label5.Location = new Point(720, 29);
+            label5.Location = new Point(531, 91);
             label5.Name = "label5";
             label5.Size = new Size(72, 25);
             label5.TabIndex = 12;
             label5.Text = "Kết quả";
+            label5.Visible = false;
             // 
             // cbbResult
             // 
             cbbResult.FormattingEnabled = true;
             cbbResult.Items.AddRange(new object[] { "", "OK", "Clean/Adjust", "Replace" });
-            cbbResult.Location = new Point(807, 25);
+            cbbResult.Location = new Point(618, 87);
             cbbResult.Name = "cbbResult";
             cbbResult.Size = new Size(145, 33);
             cbbResult.TabIndex = 11;
+            cbbResult.Visible = false;
             // 
             // label4
             // 
             label4.AutoSize = true;
-            label4.Location = new Point(1229, 29);
+            label4.Location = new Point(1092, 29);
             label4.Name = "label4";
             label4.Size = new Size(80, 25);
             label4.TabIndex = 10;
@@ -112,7 +164,7 @@
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new Point(967, 29);
+            label3.Location = new Point(830, 29);
             label3.Name = "label3";
             label3.Size = new Size(76, 25);
             label3.TabIndex = 9;
@@ -121,7 +173,7 @@
             // dtpTo
             // 
             dtpTo.Format = DateTimePickerFormat.Short;
-            dtpTo.Location = new Point(1324, 26);
+            dtpTo.Location = new Point(1187, 26);
             dtpTo.Name = "dtpTo";
             dtpTo.Size = new Size(152, 31);
             dtpTo.TabIndex = 8;
@@ -129,7 +181,7 @@
             // dtpFrom
             // 
             dtpFrom.Format = DateTimePickerFormat.Short;
-            dtpFrom.Location = new Point(1058, 26);
+            dtpFrom.Location = new Point(921, 26);
             dtpFrom.Name = "dtpFrom";
             dtpFrom.Size = new Size(156, 31);
             dtpFrom.TabIndex = 7;
@@ -159,23 +211,25 @@
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(468, 29);
+            label2.Location = new Point(279, 91);
             label2.Name = "label2";
             label2.Size = new Size(66, 25);
             label2.TabIndex = 3;
             label2.Text = "Mã NV";
+            label2.Visible = false;
             // 
             // txtUserID
             // 
-            txtUserID.Location = new Point(549, 26);
+            txtUserID.Location = new Point(360, 88);
             txtUserID.Name = "txtUserID";
             txtUserID.Size = new Size(156, 31);
             txtUserID.TabIndex = 2;
+            txtUserID.Visible = false;
             // 
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(181, 29);
+            label1.Location = new Point(544, 31);
             label1.Name = "label1";
             label1.Size = new Size(101, 25);
             label1.TabIndex = 1;
@@ -183,7 +237,7 @@
             // 
             // txtMachineID
             // 
-            txtMachineID.Location = new Point(297, 26);
+            txtMachineID.Location = new Point(660, 28);
             txtMachineID.Name = "txtMachineID";
             txtMachineID.Size = new Size(156, 31);
             txtMachineID.TabIndex = 0;
@@ -312,17 +366,6 @@
             Time.Name = "Time";
             Time.ReadOnly = true;
             // 
-            // btnKhongkhi
-            // 
-            btnKhongkhi.BackColor = SystemColors.ActiveCaption;
-            btnKhongkhi.Location = new Point(3, 106);
-            btnKhongkhi.Name = "btnKhongkhi";
-            btnKhongkhi.Size = new Size(139, 58);
-            btnKhongkhi.TabIndex = 13;
-            btnKhongkhi.Text = "Không khí";
-            btnKhongkhi.UseVisualStyleBackColor = false;
-            btnKhongkhi.Click += btnKhongkhi_Click;
-            // 
             // FrmHistory
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
@@ -332,7 +375,9 @@
             Controls.Add(panel1);
             Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "FrmHistory";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "Lịch sử";
+            WindowState = FormWindowState.Maximized;
             Load += FrmTable_Load;
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
@@ -370,5 +415,8 @@
         private DataGridViewCheckBoxColumn Replace;
         private DataGridViewTextBoxColumn Time;
         private Button btnKhongkhi;
+        private Label lblPage;
+        private Button btnNext;
+        private Button btnPrev;
     }
 }

@@ -127,7 +127,7 @@ namespace MaintenanceApp.Services
 
         internal DataTable GetAir(string text, DateTime value1, DateTime value2)
         {
-            return _repo.Get_air_quality_data(int.Parse(text));
+            return _repo.Get_air_quality_data(text, value1, value2);
         }
     }
 }

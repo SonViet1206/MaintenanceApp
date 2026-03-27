@@ -84,7 +84,7 @@ namespace MaintenanceApp.Forms
         private void LoadTab4()
         {
             cbb_tab4_MachineCode.DataSource = _service.GetAllMachine();
-            
+
             cbb_tab4_MachineCode.DisplayMember = "machine_code";
             cbb_tab4_MachineCode.ValueMember = "id";
 
@@ -134,7 +134,7 @@ namespace MaintenanceApp.Forms
             dgv_tab3.Columns["ng_solution"].HeaderText = "Phương pháp xử lý NG";
             if (dgv_tab3.SelectedRows.Count > 0)
                 dgv_tab3.SelectedRows[0].Selected = false;
-            txt_tab3_IteamName.Text=txt_tab3_standard.Text=txt_tab3_method.Text=txt_tab3_Ng_solution.Text="";
+            txt_tab3_IteamName.Text = txt_tab3_standard.Text = txt_tab3_method.Text = txt_tab3_Ng_solution.Text = "";
         }
         void LoadPartsForItem()
         {
@@ -145,7 +145,7 @@ namespace MaintenanceApp.Forms
         {
             _service.AddMaintenanceItem((int)cbb_tab3_MachineType.SelectedValue, (int)cbb_tab3_Part.SelectedValue, txt_tab3_IteamName.Text, txt_tab3_standard.Text, txt_tab3_method.Text, txt_tab3_Ng_solution.Text, (int)txt_tab3_DisplayOrder.Value);
             MessageBox.Show("Thêm thành công");
-            cbb_tab3_MachineType_SelectedIndexChanged(null,null);
+            cbb_tab3_MachineType_SelectedIndexChanged(null, null);
 
 
         }
@@ -155,13 +155,13 @@ namespace MaintenanceApp.Forms
             _service.AddMachine(txt_tab4_MachineID.Text, (int)cbb_tab4_MachineType.SelectedValue);
             MessageBox.Show("Added successfully");
             LoadTab4();
-            
+
 
 
         }
         void LoadAllMachinesDependOnCode()
         {
-            
+
 
             DataTable dt = _service.GetAllMachine();
 
@@ -293,7 +293,7 @@ namespace MaintenanceApp.Forms
                 MessageBox.Show("Vui lòng chọn bản ghi cần sửa");
                 return;
             }
-            _service.UpdateMaintenanceItem((int)dgv_tab3.SelectedRows[0].Cells["id"].Value, txt_tab3_IteamName.Text, txt_tab3_standard.Text, txt_tab3_method.Text, txt_tab3_Ng_solution.Text, (int)txt_tab3_DisplayOrder.Value,(int)cbb_tab3_Part.SelectedValue,(int)cbb_tab3_MachineType.SelectedValue);
+            _service.UpdateMaintenanceItem((int)dgv_tab3.SelectedRows[0].Cells["id"].Value, txt_tab3_IteamName.Text, txt_tab3_standard.Text, txt_tab3_method.Text, txt_tab3_Ng_solution.Text, (int)txt_tab3_DisplayOrder.Value, (int)cbb_tab3_Part.SelectedValue, (int)cbb_tab3_MachineType.SelectedValue);
             MessageBox.Show("Cập nhật thành công");
             dgv_tab3.SelectedRows[0].Selected = false;
             dgv_tab3.DataSource = _service.GetItems((int)cbb_tab3_MachineType.SelectedValue, Convert.ToInt32(cbb_tab3_Part.SelectedValue));
@@ -304,7 +304,7 @@ namespace MaintenanceApp.Forms
             if (e.RowIndex != -1)
             {
                 DataGridViewRow row = dgv_tab3.Rows[e.RowIndex];
-                cbb_tab3_Part.SelectedIndex =Convert.ToInt32( row.Cells["part_display_order"].Value)-1;
+                cbb_tab3_Part.SelectedIndex = Convert.ToInt32(row.Cells["part_display_order"].Value) - 1;
                 cbb_tab3_MachineType.SelectedValue = Convert.ToInt32(row.Cells["machine_type_id"].Value);
                 txt_tab3_IteamName.Text = row.Cells["item_name"].Value.ToString();
                 txt_tab3_standard.Text = row.Cells["standard"].Value.ToString();
@@ -456,6 +456,42 @@ namespace MaintenanceApp.Forms
         private void btn_tab4_Find_Click(object sender, EventArgs e)
         {
             LoadAllMachinesDependOnCode();
+        }
+
+        private void FrmSetup_Load(object sender, EventArgs e)
+        {
+            ReadConfig();
+        }
+        IniFile ini = new IniFile(Application.StartupPath + "\\Appconfig.ini");
+        private void ReadConfig()
+        {
+            string host = ini.Read("Database", "Host");
+            string port = ini.Read("Database", "Port");
+            string user = ini.Read("Database", "User");
+            string password = ini.Read("Database", "Password");
+            string database = ini.Read("Database", "Database");
+            txtIP.Text = host;
+            txtPort.Text = port;
+            txtUser.Text = user;
+            txtPass.Text = password;
+            txtDatabase.Text = database;
+
+        }
+
+        private void btnSaveConfig_Click(object sender, EventArgs e)
+        {
+            
+
+        }
+
+        private void btnSaveConfig_Click_1(object sender, EventArgs e)
+        {
+            ini.Write("Database", "Host", txtIP.Text);
+            ini.Write("Database", "Port", txtPort.Text);
+            ini.Write("Database", "User", txtUser.Text);
+            ini.Write("Database", "Password", txtPass.Text);
+            ini.Write("Database", "Database", txtDatabase.Text);
+            MessageBox.Show("Lưu thành công");
         }
     }
 }

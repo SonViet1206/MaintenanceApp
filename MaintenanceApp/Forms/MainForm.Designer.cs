@@ -77,6 +77,7 @@
             Controls.Add(btnRun);
             Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "MainForm";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "Phần mềm bảo dưỡng máy ";
             ResumeLayout(false);
         }

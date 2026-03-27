@@ -45,7 +45,7 @@ namespace MaintenanceApp.Interfaces
          //void Update_air_quality_checklist(int id, string item_name, string standard, string method, string ng_solution, int display_order);
          //void Delete_air_quality_checklist(int id);
          void Update_maintenance_history(int id, int id_air);
-        DataTable Get_air_quality_data(int machine_type_id);
+        DataTable Get_air_quality_data(string machine_code, DateTime? from, DateTime? to);
         
 
     }

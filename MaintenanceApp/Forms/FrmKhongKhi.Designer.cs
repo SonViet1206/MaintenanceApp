@@ -34,22 +34,27 @@
             // 
             // dgv
             // 
+            dgv.AllowUserToAddRows = false;
+            dgv.AllowUserToDeleteRows = false;
+            dgv.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgv.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
             dgv.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgv.Dock = DockStyle.Fill;
             dgv.Location = new Point(0, 0);
             dgv.Name = "dgv";
             dgv.RowHeadersWidth = 62;
-            dgv.Size = new Size(800, 450);
+            dgv.Size = new Size(883, 450);
             dgv.TabIndex = 0;
             // 
             // FrmKhongKhi
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
+            ClientSize = new Size(883, 450);
             Controls.Add(dgv);
             Name = "FrmKhongKhi";
-            Text = "Nồng độ không khí";
+            StartPosition = FormStartPosition.CenterScreen;
+            Text = "Chất lượng không khí";
             Load += FrmKhongKhi_Load;
             ((System.ComponentModel.ISupportInitialize)dgv).EndInit();
             ResumeLayout(false);

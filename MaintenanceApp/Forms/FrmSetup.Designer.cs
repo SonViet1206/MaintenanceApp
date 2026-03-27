@@ -98,18 +98,17 @@
             btn_tab4_AddMachine = new Button();
             cbb_tab4_MachineType = new ComboBox();
             tabPage5 = new TabPage();
-            textBox1 = new TextBox();
-            label15 = new Label();
-            textBox2 = new TextBox();
-            label16 = new Label();
-            textBox3 = new TextBox();
-            label17 = new Label();
-            textBox4 = new TextBox();
-            label18 = new Label();
-            textBox5 = new TextBox();
+            btnSaveConfig = new Button();
+            txtPass = new TextBox();
             label19 = new Label();
-            textBox6 = new TextBox();
+            txtUser = new TextBox();
             label20 = new Label();
+            txtDatabase = new TextBox();
+            label17 = new Label();
+            txtPort = new TextBox();
+            label16 = new Label();
+            txtIP = new TextBox();
+            label15 = new Label();
             tabControl1.SuspendLayout();
             tabPage1.SuspendLayout();
             panel2.SuspendLayout();
@@ -506,7 +505,7 @@
             // 
             // btn_tab3_Delete
             // 
-            btn_tab3_Delete.Location = new Point(311, 728);
+            btn_tab3_Delete.Location = new Point(393, 728);
             btn_tab3_Delete.Name = "btn_tab3_Delete";
             btn_tab3_Delete.Size = new Size(120, 43);
             btn_tab3_Delete.TabIndex = 32;
@@ -527,7 +526,7 @@
             // 
             // btn_tab3_Fix
             // 
-            btn_tab3_Fix.Location = new Point(185, 728);
+            btn_tab3_Fix.Location = new Point(231, 728);
             btn_tab3_Fix.Name = "btn_tab3_Fix";
             btn_tab3_Fix.Size = new Size(120, 43);
             btn_tab3_Fix.TabIndex = 30;
@@ -690,10 +689,10 @@
             // 
             tabPage4.Controls.Add(dgv_tab4);
             tabPage4.Controls.Add(panel4);
-            tabPage4.Location = new Point(4, 39);
+            tabPage4.Location = new Point(4, 34);
             tabPage4.Name = "tabPage4";
             tabPage4.Padding = new Padding(3);
-            tabPage4.Size = new Size(1890, 981);
+            tabPage4.Size = new Size(1890, 986);
             tabPage4.TabIndex = 3;
             tabPage4.Text = "Máy";
             tabPage4.UseVisualStyleBackColor = true;
@@ -729,7 +728,7 @@
             dgv_tab4.RowHeadersVisible = false;
             dgv_tab4.RowHeadersWidth = 62;
             dgv_tab4.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgv_tab4.Size = new Size(1884, 721);
+            dgv_tab4.Size = new Size(1884, 726);
             dgv_tab4.TabIndex = 29;
             dgv_tab4.CellClick += dgv_tab4_CellClick;
             dgv_tab4.DataBindingComplete += dgv_tab4_DataBindingComplete;
@@ -845,17 +844,16 @@
             // 
             // tabPage5
             // 
-            tabPage5.Controls.Add(textBox4);
-            tabPage5.Controls.Add(label18);
-            tabPage5.Controls.Add(textBox5);
+            tabPage5.Controls.Add(btnSaveConfig);
+            tabPage5.Controls.Add(txtPass);
             tabPage5.Controls.Add(label19);
-            tabPage5.Controls.Add(textBox6);
+            tabPage5.Controls.Add(txtUser);
             tabPage5.Controls.Add(label20);
-            tabPage5.Controls.Add(textBox3);
+            tabPage5.Controls.Add(txtDatabase);
             tabPage5.Controls.Add(label17);
-            tabPage5.Controls.Add(textBox2);
+            tabPage5.Controls.Add(txtPort);
             tabPage5.Controls.Add(label16);
-            tabPage5.Controls.Add(textBox1);
+            tabPage5.Controls.Add(txtIP);
             tabPage5.Controls.Add(label15);
             tabPage5.Location = new Point(4, 39);
             tabPage5.Name = "tabPage5";
@@ -865,12 +863,86 @@
             tabPage5.Text = "Thông số khác";
             tabPage5.UseVisualStyleBackColor = true;
             // 
-            // textBox1
+            // btnSaveConfig
             // 
-            textBox1.Location = new Point(671, 264);
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(792, 37);
-            textBox1.TabIndex = 24;
+            btnSaveConfig.Location = new Point(1007, 552);
+            btnSaveConfig.Name = "btnSaveConfig";
+            btnSaveConfig.Size = new Size(107, 55);
+            btnSaveConfig.TabIndex = 33;
+            btnSaveConfig.Text = "Save";
+            btnSaveConfig.UseVisualStyleBackColor = true;
+            btnSaveConfig.Click += btnSaveConfig_Click_1;
+            // 
+            // txtPass
+            // 
+            txtPass.Location = new Point(671, 476);
+            txtPass.Name = "txtPass";
+            txtPass.Size = new Size(792, 37);
+            txtPass.TabIndex = 32;
+            // 
+            // label19
+            // 
+            label19.AutoSize = true;
+            label19.Location = new Point(390, 320);
+            label19.Name = "label19";
+            label19.Size = new Size(52, 30);
+            label19.TabIndex = 31;
+            label19.Text = "Port";
+            // 
+            // txtUser
+            // 
+            txtUser.Location = new Point(671, 423);
+            txtUser.Name = "txtUser";
+            txtUser.Size = new Size(792, 37);
+            txtUser.TabIndex = 30;
+            // 
+            // label20
+            // 
+            label20.AutoSize = true;
+            label20.Location = new Point(390, 483);
+            label20.Name = "label20";
+            label20.Size = new Size(103, 30);
+            label20.TabIndex = 29;
+            label20.Text = "Password";
+            // 
+            // txtDatabase
+            // 
+            txtDatabase.Location = new Point(671, 370);
+            txtDatabase.Name = "txtDatabase";
+            txtDatabase.Size = new Size(792, 37);
+            txtDatabase.TabIndex = 28;
+            // 
+            // label17
+            // 
+            label17.AutoSize = true;
+            label17.Location = new Point(390, 430);
+            label17.Name = "label17";
+            label17.Size = new Size(62, 30);
+            label17.TabIndex = 27;
+            label17.Text = "User:";
+            // 
+            // txtPort
+            // 
+            txtPort.Location = new Point(671, 317);
+            txtPort.Name = "txtPort";
+            txtPort.Size = new Size(792, 37);
+            txtPort.TabIndex = 26;
+            // 
+            // label16
+            // 
+            label16.AutoSize = true;
+            label16.Location = new Point(390, 377);
+            label16.Name = "label16";
+            label16.Size = new Size(107, 30);
+            label16.TabIndex = 25;
+            label16.Text = "DataBase:";
+            // 
+            // txtIP
+            // 
+            txtIP.Location = new Point(671, 264);
+            txtIP.Name = "txtIP";
+            txtIP.Size = new Size(792, 37);
+            txtIP.TabIndex = 24;
             // 
             // label15
             // 
@@ -880,86 +952,6 @@
             label15.Size = new Size(87, 30);
             label15.TabIndex = 23;
             label15.Text = "IP Host:";
-            // 
-            // textBox2
-            // 
-            textBox2.Location = new Point(671, 317);
-            textBox2.Name = "textBox2";
-            textBox2.Size = new Size(792, 37);
-            textBox2.TabIndex = 26;
-            // 
-            // label16
-            // 
-            label16.AutoSize = true;
-            label16.Location = new Point(390, 320);
-            label16.Name = "label16";
-            label16.Size = new Size(107, 30);
-            label16.TabIndex = 25;
-            label16.Text = "DataBase:";
-            // 
-            // textBox3
-            // 
-            textBox3.Location = new Point(671, 370);
-            textBox3.Name = "textBox3";
-            textBox3.Size = new Size(792, 37);
-            textBox3.TabIndex = 28;
-            // 
-            // label17
-            // 
-            label17.AutoSize = true;
-            label17.Location = new Point(390, 479);
-            label17.Name = "label17";
-            label17.Size = new Size(62, 30);
-            label17.TabIndex = 27;
-            label17.Text = "User:";
-            // 
-            // textBox4
-            // 
-            textBox4.Location = new Point(671, 529);
-            textBox4.Name = "textBox4";
-            textBox4.Size = new Size(792, 37);
-            textBox4.TabIndex = 34;
-            // 
-            // label18
-            // 
-            label18.AutoSize = true;
-            label18.Location = new Point(390, 532);
-            label18.Name = "label18";
-            label18.Size = new Size(178, 30);
-            label18.TabIndex = 33;
-            label18.Text = "Thư mục xuất file";
-            // 
-            // textBox5
-            // 
-            textBox5.Location = new Point(671, 476);
-            textBox5.Name = "textBox5";
-            textBox5.Size = new Size(792, 37);
-            textBox5.TabIndex = 32;
-            // 
-            // label19
-            // 
-            label19.AutoSize = true;
-            label19.Location = new Point(390, 373);
-            label19.Name = "label19";
-            label19.Size = new Size(52, 30);
-            label19.TabIndex = 31;
-            label19.Text = "Port";
-            // 
-            // textBox6
-            // 
-            textBox6.Location = new Point(671, 423);
-            textBox6.Name = "textBox6";
-            textBox6.Size = new Size(792, 37);
-            textBox6.TabIndex = 30;
-            // 
-            // label20
-            // 
-            label20.AutoSize = true;
-            label20.Location = new Point(390, 426);
-            label20.Name = "label20";
-            label20.Size = new Size(103, 30);
-            label20.TabIndex = 29;
-            label20.Text = "Password";
             // 
             // FrmSetup
             // 
@@ -972,7 +964,10 @@
             KeyPreview = true;
             Margin = new Padding(4);
             Name = "FrmSetup";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "Setup";
+            WindowState = FormWindowState.Maximized;
+            Load += FrmSetup_Load;
             Shown += FrmSetup_Shown;
             KeyDown += FrmSetup_KeyDown;
             tabControl1.ResumeLayout(false);
@@ -1063,17 +1058,16 @@
         private Button button3;
         private Button btnLoad;
         private TabPage tabPage5;
-        private TextBox textBox3;
+        private TextBox txtDatabase;
         private Label label17;
-        private TextBox textBox2;
+        private TextBox txtPort;
         private Label label16;
-        private TextBox textBox1;
+        private TextBox txtIP;
         private Label label15;
-        private TextBox textBox4;
-        private Label label18;
-        private TextBox textBox5;
+        private TextBox txtPass;
         private Label label19;
-        private TextBox textBox6;
+        private TextBox txtUser;
         private Label label20;
+        private Button btnSaveConfig;
     }
 }

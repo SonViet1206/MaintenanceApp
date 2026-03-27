@@ -16,8 +16,25 @@ namespace MaintenanceApp
         {
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
-            string connectionString =
-                "Host=localhost;Username=postgres;Password=12345678;Database=Maintenance";
+            
+            string path = Application.StartupPath + "\\AppConfig.ini";
+           
+            if (!File.Exists(path))
+            {
+                
+                IniFile _ini = new IniFile(path);
+                _ini.Write("Database", "Host", "172.28.8.87");
+                _ini.Write("Database", "Port", "5432");
+                _ini.Write("Database", "User", "postgres");
+                _ini.Write("Database", "Password", "12345678");
+                _ini.Write("Database", "Database", "Maintenance");
+            }
+            IniFile ini = new IniFile(path);
+            string connectionString = $"Host={ini.Read("Database", "Host")};" +
+               $"Port={ini.Read("Database", "Port")};" +
+               $"Username={ini.Read("Database", "User")};" +
+               $"Password={ini.Read("Database", "Password")};" +
+               $"Database={ini.Read("Database", "Database")};";
             // Repository
             IMaintenanceRepository maintenanceRepository =
                 new MaintenanceRepository(connectionString);

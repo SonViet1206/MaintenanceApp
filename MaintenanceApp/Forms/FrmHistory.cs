@@ -30,6 +30,8 @@ namespace MaintenanceApp.Forms
 
         }
         DialogResult _dr;
+        private List<IGrouping<object, DataRow>> _pages;
+        private int _currentPage = 0;
         private void btnFind_Click(object sender, EventArgs e)
         {
             string machine = string.IsNullOrWhiteSpace(txtMachineID.Text)
@@ -40,7 +42,11 @@ namespace MaintenanceApp.Forms
 
             string result = string.IsNullOrWhiteSpace(cbbResult.Text)
                 ? null : cbbResult.Text;
-
+            if(machine==null)
+            {
+                MessageBox.Show("Vui lòng nhập mã máy để tìm kiếm");
+                return;
+            }    
             DateTime? from = dtpFrom.Checked ? dtpFrom.Value : null;
             DateTime? to = dtpTo.Checked ? dtpTo.Value : null;
 
@@ -49,18 +55,32 @@ namespace MaintenanceApp.Forms
             dtHistory.Rows.Clear();
             //thông báo : chỉ tìm kiếm ngày gần nhất hay tất cả
             _dr = MessageBox.Show("Chỉ tìm ngày gần nhất đúng chứ?", "Câu hỏi", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1);
-
+            DateTime time = DateTime.Now;
+            bool isNew = false;
             if (_dr == DialogResult.Yes)
             {
                 dtHistory = _service.SearchHistory(machine, user, result, from, to);
-
+                lblPage.Visible = false;
+                btnNext.Visible = false;
+                btnPrev.Visible = false;
+                isNew=true;
             }
             else
             {
                 dtHistory = _service.GetHistory(machine, from, to);
-            }
+                _pages = dtHistory.AsEnumerable()
+                .GroupBy(x => x["sheet_id"])
+                .OrderByDescending(g => g.Max(x => x.Field<DateTime>("check_date")))
+                .ToList();
 
-            
+                _currentPage = 0;
+                lblPage.Text = $"Page {_currentPage + 1} / {_pages.Count}";
+                lblPage.Visible = true;
+                btnNext.Visible = true;
+                btnPrev.Visible = true;
+            }
+            //MessageBox.Show($"{DateTime.Now - time}");
+
 
             // Xóa dữ liệu cũ
             dgvHistory.Rows.Clear();
@@ -69,11 +89,55 @@ namespace MaintenanceApp.Forms
                 MessageBox.Show("Không tìm thấy kết quả nào");
                 return;
             }
+            if (_service.GetMachineTypeName($"{txtMachineID.Text}").ToUpper().Contains("PEKO"))
+            {
+                btnKhongkhi.Visible = true;
+            }
+            else
+            {
+                btnKhongkhi.Visible = false;
+            }
+            
+            if(isNew)
+            {
+                foreach (DataRow dr in dtHistory.Rows)
+                {
+                    int rowIndex = dgvHistory.Rows.Add();
 
-            foreach (DataRow dr in dtHistory.Rows)
+                    var row = dgvHistory.Rows[rowIndex];
+
+                    row.Cells["MachineCode"].Value = dr["machine_code"]?.ToString();
+                    row.Cells["userID"].Value = dr["user_id"]?.ToString();
+                    row.Cells["TypeMachineName"].Value = dr["machine_type_name"]?.ToString();
+                    row.Cells["PartName"].Value = dr["part_name"]?.ToString();
+                    row.Cells["ItemName"].Value = dr["item_name"]?.ToString();
+                    row.Cells["Standard"].Value = dr["standard"]?.ToString();
+                    row.Cells["Method"].Value = dr["method"]?.ToString();
+                    row.Cells["ng_solution"].Value = dr["ng_solution"]?.ToString();
+                    row.Cells["Time"].Value = Convert.ToDateTime(dr["check_date"]).ToString("yyyy-MM-dd HH:mm");
+
+                    string resultValue = dr["result"]?.ToString();
+
+                    row.Cells["OK"].Value = resultValue == "OK";
+                    row.Cells["Clean"].Value = resultValue == "Clean/Adjust";
+                    row.Cells["Replace"].Value = resultValue == "Replace";
+                }
+            }
+            else
+                LoadPage(_currentPage);
+            
+        }
+        private void LoadPage(int pageIndex)
+        {
+            if (_pages == null || _pages.Count == 0) return;
+
+            dgvHistory.Rows.Clear();
+
+            var page = _pages[pageIndex];
+
+            foreach (var dr in page)
             {
                 int rowIndex = dgvHistory.Rows.Add();
-
                 var row = dgvHistory.Rows[rowIndex];
 
                 row.Cells["MachineCode"].Value = dr["machine_code"]?.ToString();
@@ -84,7 +148,8 @@ namespace MaintenanceApp.Forms
                 row.Cells["Standard"].Value = dr["standard"]?.ToString();
                 row.Cells["Method"].Value = dr["method"]?.ToString();
                 row.Cells["ng_solution"].Value = dr["ng_solution"]?.ToString();
-                row.Cells["Time"].Value = Convert.ToDateTime(dr["check_date"]).ToString("yyyy-MM-dd HH:mm");
+                row.Cells["Time"].Value = Convert.ToDateTime(dr["check_date"])
+                    .ToString("yyyy-MM-dd HH:mm");
 
                 string resultValue = dr["result"]?.ToString();
 
@@ -93,7 +158,6 @@ namespace MaintenanceApp.Forms
                 row.Cells["Replace"].Value = resultValue == "Replace";
             }
         }
-
 
         public void ExportToExcel(DataTable dt)
         {
@@ -130,12 +194,34 @@ namespace MaintenanceApp.Forms
                                         .ToString("yyyy-MM-dd");
             //ws.Cell(row, 7).Value = Convert.ToDateTime(dt.Rows[0]["check_date"])
             //                            .ToString("yyyy-MM-dd");
-            row++;
-            ws.Cell(row++, 5).Value = $"o:OK";
-            ws.Cell(row++, 5).Value = $"∆:Vệ sinh,điều chỉnh(清掃、調整)";
-            ws.Cell(row++, 5).Value = "x:Thay thế(交換する)";
 
-            row += 2;
+            if (btnKhongkhi.Visible)
+            {
+                row += 2;
+                var airData = _service.GetAir(txtMachineID.Text, dtpFrom.Value, dtpTo.Value);
+                var latestRow = airData.AsEnumerable()
+                .OrderByDescending(r => r.Field<DateTime>("created_at"))
+                .FirstOrDefault(); // Lấy dòng đầu tiên hoặc null nếu bảng trống
+
+                if (latestRow != null)
+                {
+                    // Ví dụ: Lấy giá trị ngày của dòng đó
+                    DateTime lastDate = latestRow.Field<DateTime>("created_at");
+                }
+                ws.Range("A5:B5").Merge();
+                ws.Range("A6:B6").Merge();
+                ws.Range("A7:B7").Merge();
+                ws.Cell(row++, 1).Value = $"Giá trị không khí 1:{latestRow[1].ToString()}";
+                ws.Cell(row++, 1).Value = $"Giá trị không khí 2:{latestRow[2].ToString()}";
+                ws.Cell(row++, 1).Value = $"Giá trị không khí 3:{latestRow[3].ToString()}";
+                ws.Range(5, 1, 7, 2).Style.Font.SetBold().Alignment.SetHorizontal(XLAlignmentHorizontalValues.Left);
+
+
+
+            }
+
+
+            row += 1;
 
             // ===== TABLE HEADER =====
             int headerRow = row;
@@ -259,6 +345,8 @@ namespace MaintenanceApp.Forms
                 // Lấy đường dẫn đầy đủ mà người dùng đã chọn
                 string filePath = saveFileDialog.FileName;
                 wb.SaveAs(filePath);
+
+
 
                 MessageBox.Show("Export thành công!");
 
@@ -484,7 +572,12 @@ namespace MaintenanceApp.Forms
                 // Lấy đường dẫn đầy đủ mà người dùng đã chọn
                 string filePath = saveFileDialog.FileName;
                 wb.SaveAs(filePath);
+                if (btnKhongkhi.Visible)
+                {
+                    var airData = _service.GetAir(txtMachineID.Text, dtpFrom.Value, dtpTo.Value);
 
+                    ExportAirQualityMonths(airData, filePath.Replace(".xlsx", "_AirQuality.xlsx"));
+                }
                 MessageBox.Show("Export thành công!");
 
             }
@@ -709,7 +802,12 @@ namespace MaintenanceApp.Forms
                 // Lấy đường dẫn đầy đủ mà người dùng đã chọn
                 string filePath = saveFileDialog.FileName;
                 wb.SaveAs(filePath);
+                if (btnKhongkhi.Visible)
+                {
+                    var airData = _service.GetAir(txtMachineID.Text, dtpFrom.Value, dtpTo.Value);
 
+                    ExportAirQuality12Months(airData, filePath.Replace(".xlsx", "_AirQuality.xlsx"));
+                }
                 MessageBox.Show("Export thành công!");
 
             }
@@ -740,6 +838,7 @@ namespace MaintenanceApp.Forms
 
             }
 
+
         }
 
         private void dtpFrom_ValueChanged(object sender, EventArgs e)
@@ -755,8 +854,281 @@ namespace MaintenanceApp.Forms
 
         private void btnKhongkhi_Click(object sender, EventArgs e)
         {
-            FrmKhongKhi frmKhongKhi = new FrmKhongKhi(_service.GetAir(txtMachineID.Text,dtpFrom.Value,dtpTo.Value));
+            FrmKhongKhi frmKhongKhi = new FrmKhongKhi(_service.GetAir(txtMachineID.Text, dtpFrom.Value, dtpTo.Value));
             frmKhongKhi.Show();
+        }
+        public void ExportAirQuality12Months(DataTable dt, string path)
+        {
+            DataTable dtKetQua = dt.AsEnumerable().GroupBy(r => new
+            {
+                Nam = r.Field<DateTime>("created_at").Year,
+                Thang = r.Field<DateTime>("created_at").Month
+            })
+    // 2. Với mỗi nhóm (mỗi tháng), chọn ra dòng có Ngày lớn nhất
+    .Select(g => g.OrderByDescending(x => x.Field<DateTime>("created_at")).First())
+    // 3. Chuyển kết quả về lại DataTable
+    .CopyToDataTable();
+
+            if (dtKetQua.Rows.Count == 0) return;
+
+            using var wb = new XLWorkbook();
+            var ws = wb.Worksheets.Add("AirQuality");
+
+            ws.Style.Font.FontName = "Times New Roman";
+            ws.Style.Font.FontSize = 11;
+
+            int row = 1;
+
+            // ===== HEADER =====
+            ws.Cell(row, 1).Value = "AIR QUALITY MEASUREMENT SHEET";
+            ws.Range(row, 1, row, 14).Merge().Style
+                .Font.SetBold()
+                .Font.SetFontSize(16)
+                .Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+
+            row += 2;
+
+            // ===== INFO =====
+            string machine = dtKetQua.Rows[0]["machine_code"]?.ToString();
+
+            ws.Cell(row, 1).Value = $"Machine: {machine}";
+            ws.Range(row, 1, row, 2).Merge();
+
+
+            row += 2;
+
+            int headerRow = row;
+
+            // ===== HEADER =====
+            ws.Cell(row, 1).Value = "Chỉ số";
+
+            // ===== GROUP THEO THÁNG =====
+            var monthData = dtKetQua.AsEnumerable()
+                .GroupBy(x => new
+                {
+                    Year = Convert.ToDateTime(x["created_at"]).Year,
+                    Month = Convert.ToDateTime(x["created_at"]).Month
+                })
+                .ToDictionary(
+                    g => g.Key.Month,
+                    g => g.OrderByDescending(x => Convert.ToDateTime(x["created_at"])).First()
+                );
+
+            int col = 2;
+
+            // ===== HEADER 12 THÁNG =====
+            for (int m = 1; m <= 12; m++)
+            {
+                ws.Cell(row, col).Value =
+                    System.Globalization.CultureInfo.CurrentCulture
+                    .DateTimeFormat.GetAbbreviatedMonthName(m);
+
+                ws.Column(col).Width = 10;
+                col++;
+            }
+
+            ws.Range(row, 1, row, 13).Style
+                .Font.SetBold()
+                .Fill.SetBackgroundColor(XLColor.LightGray)
+                .Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+
+            row++;
+
+            // ===== DATA =====
+            string[] labels = { "Value 1", "Value 2", "Value 3" };
+            string[] cols = { "measure_value1", "measure_value2", "measure_value3" };
+
+            for (int i = 0; i < 3; i++)
+            {
+                ws.Cell(row, 1).Value = labels[i];
+
+                col = 2;
+
+                for (int m = 1; m <= 12; m++)
+                {
+                    if (monthData.ContainsKey(m))
+                    {
+                        var data = monthData[m];
+
+                        ws.Cell(row, col).Value = data[cols[i]]?.ToString();
+                    }
+
+                    col++;
+                }
+
+                row++;
+            }
+
+            int lastRow = row - 1;
+            int lastCol = 13;
+
+            // ===== STYLE =====
+            ws.Range(headerRow, 1, lastRow, lastCol).Style.Alignment
+                .SetHorizontal(XLAlignmentHorizontalValues.Center);
+            ws.Range(headerRow, 1, lastRow, lastCol).Style.Alignment.SetVertical(XLAlignmentVerticalValues.Center);
+
+            // ===== BORDER =====
+            ws.Range(headerRow, 1, lastRow, lastCol).Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
+            ws.Range(headerRow, 1, lastRow, lastCol).Style.Border.InsideBorder = XLBorderStyleValues.Thin;
+
+            // ===== WIDTH =====
+            ws.Column(1).Width = 20;
+
+            // ===== AUTO HEIGHT =====
+            ws.Rows().AdjustToContents();
+
+            // ===== PRINT =====
+            ws.PageSetup.PaperSize = XLPaperSize.A4Paper;
+            ws.PageSetup.PageOrientation = XLPageOrientation.Landscape;
+            ws.PageSetup.FitToPages(1, 1);
+
+            // ===== SAVE =====
+
+            wb.SaveAs(path);
+
+
+        }
+        public void ExportAirQualityMonths(DataTable dt, string path)
+        {
+            if (dt.Rows.Count == 0) return;
+
+            // ===== LẤY DÒNG MỚI NHẤT THEO THÁNG =====
+            DataTable dtKetQua = dt.AsEnumerable()
+                .GroupBy(r => new
+                {
+                    Nam = r.Field<DateTime>("created_at").Year,
+                    Thang = r.Field<DateTime>("created_at").Month
+                })
+                .Select(g => g.OrderByDescending(x => x.Field<DateTime>("created_at")).First())
+                .CopyToDataTable();
+
+            using var wb = new XLWorkbook();
+            var ws = wb.Worksheets.Add("AirQuality");
+
+            ws.Style.Font.FontName = "Times New Roman";
+            ws.Style.Font.FontSize = 11;
+
+            int row = 1;
+
+            // ===== HEADER =====
+            ws.Cell(row, 1).Value = "AIR QUALITY MEASUREMENT SHEET";
+
+
+            row += 2;
+
+            // ===== INFO =====
+            string machine = dtKetQua.Rows[0]["machine_code"]?.ToString();
+
+            ws.Cell(row, 1).Value = $"Machine: {machine}";
+            ws.Range(row, 1, row, 3).Merge();
+
+            row += 2;
+
+            int headerRow = row;
+
+            // ===== HEADER TRÁI =====
+            ws.Cell(row, 1).Value = "Chỉ số";
+
+            // ===== GROUP THEO THÁNG =====
+            var monthData = dtKetQua.AsEnumerable()
+                .GroupBy(x => new
+                {
+                    Year = x.Field<DateTime>("created_at").Year,
+                    Month = x.Field<DateTime>("created_at").Month
+                })
+                .Select(g => g.OrderByDescending(x => x.Field<DateTime>("created_at")).First())
+                .OrderBy(x => x.Field<DateTime>("created_at"))
+                .ToList();
+
+            int col = 2;
+
+            // ===== HEADER THEO THÁNG CÓ DATA =====
+            foreach (var m in monthData)
+            {
+                var date = m.Field<DateTime>("created_at");
+
+                ws.Cell(row, col).Value = date.ToString("MM/yyyy"); // hoặc "MMM"
+                ws.Column(col).Width = 12;
+
+                col++;
+            }
+
+            ws.Range(row, 1, row, col - 1).Style
+                .Font.SetBold()
+                .Fill.SetBackgroundColor(XLColor.LightGray)
+                .Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center)
+                .Alignment.SetVertical(XLAlignmentVerticalValues.Center);
+
+            row++;
+            ws.Range(1, 1, 1, col).Merge().Style
+                .Font.SetBold()
+                .Font.SetFontSize(16)
+                .Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+            // ===== DATA =====
+            string[] labels = { "Value 1", "Value 2", "Value 3" };
+            string[] cols = { "measure_value1", "measure_value2", "measure_value3" };
+
+            for (int i = 0; i < 3; i++)
+            {
+                ws.Cell(row, 1).Value = labels[i];
+
+                col = 2;
+
+                foreach (var m in monthData)
+                {
+                    ws.Cell(row, col).Value = m[cols[i]]?.ToString();
+                    col++;
+                }
+
+                row++;
+            }
+
+            int lastRow = row - 1;
+            int lastCol = col - 1;
+
+            // ===== STYLE =====
+            ws.Range(headerRow, 1, lastRow, lastCol).Style.Alignment
+                .SetHorizontal(XLAlignmentHorizontalValues.Center);
+            ws.Range(headerRow, 1, lastRow, lastCol).Style.Alignment.SetVertical(XLAlignmentVerticalValues.Center);
+
+            // ===== BORDER =====
+            ws.Range(headerRow, 1, lastRow, lastCol).Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
+            ws.Range(headerRow, 1, lastRow, lastCol).Style.Border.InsideBorder = XLBorderStyleValues.Thin;
+
+            // ===== WIDTH =====
+            ws.Column(1).Width = 20;
+
+            // ===== AUTO HEIGHT =====
+            ws.Rows().AdjustToContents();
+
+            // ===== PRINT =====
+            ws.PageSetup.PaperSize = XLPaperSize.A4Paper;
+            ws.PageSetup.PageOrientation = XLPageOrientation.Landscape;
+            ws.PageSetup.FitToPages(1, 1);
+            ws.PageSetup.CenterHorizontally = true;
+
+            // ===== SAVE =====
+            wb.SaveAs(path);
+        }
+
+        private void btnNext_Click(object sender, EventArgs e)
+        {
+            if (_currentPage < _pages.Count - 1)
+            {
+                _currentPage++;
+                LoadPage(_currentPage);
+            }
+            lblPage.Text = $"Page {_currentPage + 1} / {_pages.Count}";
+        }
+
+        private void btnPrev_Click(object sender, EventArgs e)
+        {
+            if (_currentPage > 0)
+            {
+                _currentPage--;
+                LoadPage(_currentPage);
+            }
+            lblPage.Text = $"Page {_currentPage + 1} / {_pages.Count}";
         }
     }
 }
